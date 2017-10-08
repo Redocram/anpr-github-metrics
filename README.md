@@ -8,7 +8,7 @@ The queries are exposed on a dashboard designed following the principles written
 - Total issues number
 
 ### Tools
-- (GraphQL)[http://graphql.org/] for the queries to Github. For more info, see [GraphQL on GitHub Developer](https://developer.github.com/v4/)
-- (Bootstrap)[http://getbootstrap.com/] for front-end layout
-- (Chart.js)[http://www.chartjs.org/] for schematics
+- [GraphQL](http://graphql.org/) for the queries to Github. For more info, see [GraphQL on GitHub Developer](https://developer.github.com/v4/)
+- [Bootstrap](http://getbootstrap.com/) for front-end layout
+- [Chart.js](http://www.chartjs.org/) for schematics
 

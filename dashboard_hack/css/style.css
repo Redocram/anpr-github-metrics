@@ -1,0 +1,126 @@
+body{
+	font-family: 'Titillium Web', sans-serif !important;
+}
+
+.headboard {
+	background-color: #0066CC;
+	color: #ffffff;
+	padding: 15px 35px;
+	font-size: 20px;
+	margin-bottom: 0;
+	left: 0;
+	right: 0;
+	position: fixed;
+	z-index: 2;
+}
+
+.myNavbar {
+	background-color: #8ebeed;
+	position: fixed !important;
+	top:0;
+	bottom: 0;
+	z-index: 1;
+	padding-top: 80px;
+}
+
+.nav-link {
+	color: #ffffff;
+	line-height: 25px;
+	font-size: 16px;
+}
+
+.total {
+	margin-top: 50px;
+	width: 100%;
+}
+
+
+.myNavbar::before,
+.myNavbar::after {
+    display: table;
+    content: "";
+}
+
+.myNavbar::after {
+    clear: both;
+}
+
+.titleRepository {
+	margin: 10px 10px 10px 0;
+	padding: 10px 15px;
+	background-color: #8ebeed;
+	color: #ffffff;
+}
+
+.titleRepository > h5 {
+	display: inline-block;
+	padding: 5px 10px;
+}
+
+.titleRepository > h2 {
+	display: inline-block;
+}
+
+.eqMargin {
+	padding: 0 !important;
+	float: left;
+}
+
+.floatLine {
+	float: left;
+}
+
+.block {
+	height: auto;
+	margin-top: 5px !important;
+}
+
+.txtGraph{
+	height: 200px;
+	background-color: #0066CC;
+	float: left;
+	margin-top: 5px;
+}
+
+.txtGraph2 {
+	margin-top: 5px;
+	border-left: 7px solid #ffffff;
+	height: 200px;
+	background-color: #8ebeed;
+	float: left;
+}
+
+.txtGraph p, .txtGraph2 p {
+	font-size: 40px;
+	font-weight: bold; 
+	color: #ffffff;
+	text-align: center;
+	vertical-align: middle;
+	overflow: hidden;
+	padding-top: 50px;
+	padding-bottom: 20px;
+	position: relative;
+}
+
+.txtGraph h6, .txtGraph2 h6 {
+	font-size: 15px;
+	padding-top: 10px;
+	border-top: 1px solid #ffffff;
+	font-weight: normal; 
+	color: #ffffff;
+	text-align: center;
+}
+
+.imgGraph {
+	float: left;	
+	margin-top: 5px;
+}
+.imgGraph > canvas {
+	border: 1px solid #0066CC;
+	height: 200px !important;
+	width: 100% !important;
+}
+
+#midCall {
+	font-size: 20px;
+}

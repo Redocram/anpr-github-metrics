@@ -1,7 +1,8 @@
+/*------------------ generics ------------------------*/
 body{
 	font-family: 'Titillium Web', sans-serif !important;
 }
-
+/*------------------ top header ------------------------*/
 .headboard {
 	background-color: #0066CC;
 	color: #ffffff;
@@ -13,7 +14,7 @@ body{
 	position: fixed;
 	z-index: 2;
 }
-
+/*------------------ right navbar ------------------------*/
 .myNavbar {
 	background-color: #8ebeed;
 	position: fixed !important;
@@ -22,18 +23,6 @@ body{
 	z-index: 1;
 	padding-top: 80px;
 }
-
-.nav-link {
-	color: #ffffff;
-	line-height: 25px;
-	font-size: 16px;
-}
-
-.total {
-	margin-top: 50px;
-	width: 100%;
-}
-
 
 .myNavbar::before,
 .myNavbar::after {
@@ -45,8 +34,20 @@ body{
     clear: both;
 }
 
+.nav-link {
+	color: #ffffff;
+	line-height: 25px;
+	font-size: 16px;
+}
+
+/*------------------ statistics blocks ------------------------*/
+.total {
+	margin-top: 50px;
+	width: 100%;
+}
+
 .titleRepository {
-	margin: 10px 10px 10px 0;
+	margin: 10px 0px 10px 0;
 	padding: 10px 15px;
 	background-color: #8ebeed;
 	color: #ffffff;
@@ -121,6 +122,57 @@ body{
 	width: 100% !important;
 }
 
-#midCall {
-	font-size: 20px;
+.midCall {
+	font-size: 20px !important;
+}
+
+
+/* ------------------------ loading animated glyph ----------------------*/
+#loading{
+  display: none;
+  font-size: 24px;
+  position: fixed;
+  top: 50vh;
+  right: 50%;
+  color: #0066CC;
+  z-index: 1000;
+  background-color: rgba(255,255,255,0.7);
+  padding: 5px;
+}
+
+#loadingText {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
+
+.oi.fast-right-spinner {
+    -webkit-animation: glyphicon-spin-r 1s infinite linear;
+    animation: glyphicon-spin-r 1s infinite linear;
+}
+
+@-webkit-keyframes glyphicon-spin-r {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes glyphicon-spin-r {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }

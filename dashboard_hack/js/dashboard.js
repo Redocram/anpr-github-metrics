@@ -1,6 +1,7 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
-const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
-const token = "cf72f9a1eac45a1b58da4aedb202795d095689da";
+//const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
+const MAX_LABELS = 7;
+const token = "4ce66352cef1e5faa1fb8361f60e4f51db78d595";
 var ownerName = "italia";
 var repoName = "anpr";
 
@@ -23,8 +24,10 @@ $("document").ready(function(){
 
 	$(document).ajaxStart(function() {
           	$("#loading").show();
+          	//$("#loadingBack").show();
       	}).ajaxStop(function() {
           	$("#loading").hide();
+          	//$("#loadingBack").hide();
       	});
 
 	apiCall(1);	
@@ -109,7 +112,7 @@ function apiCall(callNumber) {
                     apiCall(++callNumber);
                 }
                 else {
-                    Object.assign(repo.stats, statistics(repo.allIssues, AVG_DIST_STEPS));                    
+                    Object.assign(repo.stats, statistics(repo.allIssues, AVG_DIST_STEPS));
                     fillHTML();
                 }
             }
@@ -149,7 +152,7 @@ function statistics (arrayIssues, distributionSteps){
     var distNumber = distributionSteps.length;
     var stats = {
         firstRespDistributed: [],
-        evaluateLabels: {},
+        evaluateLabels: [],
         firstAverage: {},
         closeDistributed: [],
         closeAverage: {}
@@ -159,6 +162,7 @@ function statistics (arrayIssues, distributionSteps){
     var totalCommented = 0;
     var closeAverage = 0;
     var totalClosed = 0;
+    var evaluateLabels = Object();
 
     for (var i = 0; i < distNumber; i++) {
         stats.firstRespDistributed.push(0);
@@ -176,10 +180,10 @@ function statistics (arrayIssues, distributionSteps){
         }
         if(issue.labels.length>0){
             issue.labels.forEach(function(label){
-                if(!stats.evaluateLabels[label]){
-                    stats.evaluateLabels[label] = 0;
+                if(!evaluateLabels[label]){
+                    evaluateLabels[label] = 0;
                 }
-                stats.evaluateLabels[label]++;
+                evaluateLabels[label]++;
             });
         }
 
@@ -212,8 +216,9 @@ function statistics (arrayIssues, distributionSteps){
 
     stats.firstAverage = convertMilliseconds(Math.floor(firstAverage / totalCommented));
     stats.closeAverage = convertMilliseconds(Math.floor(closeAverage / totalClosed));
-    stats.evaluateLabels = sortLabels(stats.evaluateLabels);
+    stats.evaluateLabels = sortLabels(evaluateLabels);
 
+    return stats;
 }
 
 // ------------------------------------ formatting & converting -----------------------------------------//
@@ -268,6 +273,8 @@ function sortLabels(labelsList){
     sortedLabels.reverse(function(a, b) {
         return a[1] - b[1];
     });
+	
+	return sortedLabels;
 }
 
 // --------------------------------- graphs section ---------------------------------------------//
@@ -398,28 +405,30 @@ function avgRespCloseChart(stats, distributionSteps){
     });
 }
 
-function evaluateLabelsChart(stats){
+function evaluateLabelsChart(stats, maxLabels){		//DA RIVERDERE LA COSTRUZIONE DELL'ARRAY DATASETS
     var ctx = document.getElementById("evaluateLabelsChart")
 
     data = {
-        datasets: {
-            data: []
-        },
+        datasets: [
+ 			{ data: [] }
+        ],
         labels: []
     };
 
-    countFirstLabels = 10;
+    countFirstLabels = maxLabels;
     stats.forEach(function(label){
         if(countFirstLabels>0){
             data.labels.push(label[0]);
-            data.datasets.data.push(label[1]);
+            data.datasets[0].data.push(label[1]);
             countFirstLabels--;
         }
         else{
-            data.labels[data.labels.length-1] = "Altro";
-            data.datasets.data[data.datasets.data.length-1] += label[1];
+            data.labels[data.labels.length-1] = "Altre label";
+            data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
         }
     });
+
+    console.log(data);
 
     var myChart = new Chart(ctx, {
         type: 'pie',
@@ -439,7 +448,7 @@ function fillHTML(){
     //graphs
     firstRespChart(repo.stats, AVG_DIST_STEPS);
     closeChart(repo.stats, AVG_DIST_STEPS)
-    evaluateLabelsChart(repo.stats.evaluateLabels);
+    evaluateLabelsChart(repo.stats.evaluateLabels, MAX_LABELS);
     //other panels
     $("#name").html(ownerName + "/" + repoName);
     $("#nTicket").html(repo.stats.nCloseIssues + repo.stats.nOpenIssues);

@@ -24,10 +24,10 @@ $("document").ready(function(){
 
 	$(document).ajaxStart(function() {
           	$("#loading").show();
-          	//$("#loadingBack").show();
+          	$('#loadingBack').fadeIn(400);
       	}).ajaxStop(function() {
           	$("#loading").hide();
-          	//$("#loadingBack").hide();
+          	$("#loadingBack").fadeOut(250);
       	});
 
 	apiCall(1);	
@@ -263,7 +263,7 @@ function avgToString(avg){
     return parsedAvg;
 }
 
-function sortLabels(labelsList){
+function sortLabels(labelsList){		//NON FUNZIONA
     var sortedLabels = new Array();
     
     for (var label in labelsList) {
@@ -351,8 +351,8 @@ function closeChart(stats, distributionSteps){
             datasets: [{
                 label: "Distribuzione tempi chiusura Issue",
                 data: data.datasets,
-                borderColor: ['rgba(255,99,132,1)'],
-                pointBorderColor: ['rgba(54, 162, 235, 1)'],
+                borderColor: ['#ff6384'],
+                pointBorderColor: ['#36a2eb'],
                 fill: "false"
             }]
         },
@@ -375,14 +375,14 @@ function avgRespCloseChart(stats, distributionSteps){
         datasets: [
             {
                 label: "Tempo prima risposta",
-                backgroundColor: 'rgba(54, 162, 235, 1)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: '#36a2eb',
+                borderColor: '#36a2eb',
                 data: stats.firstRespDistributed
             },
             {
                 label: "Tempo chiusura Ticket",
-                backgroundColor: 'rgba(255,99,132,1)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: '#ff6384)',
+                borderColor: '#36a2eb',
                 data: stats.closeDistributed
             }
         ]
@@ -405,17 +405,21 @@ function avgRespCloseChart(stats, distributionSteps){
     });
 }
 
-function evaluateLabelsChart(stats, maxLabels){		//DA RIVERDERE LA COSTRUZIONE DELL'ARRAY DATASETS
-    var ctx = document.getElementById("evaluateLabelsChart")
+//label presence
+function evaluateLabelsChart(stats, maxLabels){
+    var ctx = document.getElementById("evaluateLabelsChart");
 
     data = {
-        datasets: [
- 			{ data: [] }
+        datasets: [{
+ 				data: [],
+ 				backgroundColor: []
+ 			 },
         ],
         labels: []
     };
 
     countFirstLabels = maxLabels;
+    data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384'];
     stats.forEach(function(label){
         if(countFirstLabels>0){
             data.labels.push(label[0]);
@@ -428,17 +432,22 @@ function evaluateLabelsChart(stats, maxLabels){		//DA RIVERDERE LA COSTRUZIONE D
         }
     });
 
-    console.log(data);
-
     var myChart = new Chart(ctx, {
         type: 'pie',
         data: data,
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             layout: {
                 padding: 10
-            }
+            },
+            legend: {
+            	position: "left"
+            },
+            title: {
+            display: true,
+            text: 'Label più utilizzate'
+        }
         }
     });
 }

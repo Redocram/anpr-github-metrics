@@ -1,7 +1,8 @@
 //this is just a comment
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
-const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
-const token = "cf72f9a1eac45a1b58da4aedb202795d095689da";
+//const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
+const MAX_LABELS = 7;
+const token = "4ce66352cef1e5faa1fb8361f60e4f51db78d595";
 var ownerName = "italia";
 var repoName = "anpr";
 
@@ -24,8 +25,10 @@ $("document").ready(function(){
 
 	$(document).ajaxStart(function() {
           	$("#loading").show();
+          	$('#loadingBack').fadeIn(400);
       	}).ajaxStop(function() {
           	$("#loading").hide();
+          	$("#loadingBack").fadeOut(250);
       	});
 
 	apiCall(1);	
@@ -110,7 +113,7 @@ function apiCall(callNumber) {
                     apiCall(++callNumber);
                 }
                 else {
-                    Object.assign(repo.stats, statistics(repo.allIssues, AVG_DIST_STEPS));                    
+                    Object.assign(repo.stats, statistics(repo.allIssues, AVG_DIST_STEPS));
                     fillHTML();
                 }
             }
@@ -150,7 +153,7 @@ function statistics (arrayIssues, distributionSteps){
     var distNumber = distributionSteps.length;
     var stats = {
         firstRespDistributed: [],
-        evaluateLabels: {},
+        evaluateLabels: [],
         firstAverage: {},
         closeDistributed: [],
         closeAverage: {}
@@ -160,6 +163,7 @@ function statistics (arrayIssues, distributionSteps){
     var totalCommented = 0;
     var closeAverage = 0;
     var totalClosed = 0;
+    var evaluateLabels = Object();
 
     for (var i = 0; i < distNumber; i++) {
         stats.firstRespDistributed.push(0);
@@ -177,10 +181,10 @@ function statistics (arrayIssues, distributionSteps){
         }
         if(issue.labels.length>0){
             issue.labels.forEach(function(label){
-                if(!stats.evaluateLabels[label]){
-                    stats.evaluateLabels[label] = 0;
+                if(!evaluateLabels[label]){
+                    evaluateLabels[label] = 0;
                 }
-                stats.evaluateLabels[label]++;
+                evaluateLabels[label]++;
             });
         }
 
@@ -213,8 +217,9 @@ function statistics (arrayIssues, distributionSteps){
 
     stats.firstAverage = convertMilliseconds(Math.floor(firstAverage / totalCommented));
     stats.closeAverage = convertMilliseconds(Math.floor(closeAverage / totalClosed));
-    stats.evaluateLabels = sortLabels(stats.evaluateLabels);
+    stats.evaluateLabels = sortLabels(evaluateLabels);
 
+    return stats;
 }
 
 // ------------------------------------ formatting & converting -----------------------------------------//
@@ -259,7 +264,7 @@ function avgToString(avg){
     return parsedAvg;
 }
 
-function sortLabels(labelsList){
+function sortLabels(labelsList){		//NON FUNZIONA
     var sortedLabels = new Array();
     
     for (var label in labelsList) {
@@ -269,6 +274,8 @@ function sortLabels(labelsList){
     sortedLabels.reverse(function(a, b) {
         return a[1] - b[1];
     });
+	
+	return sortedLabels;
 }
 
 // --------------------------------- graphs section ---------------------------------------------//
@@ -345,8 +352,8 @@ function closeChart(stats, distributionSteps){
             datasets: [{
                 label: "Distribuzione tempi chiusura Issue",
                 data: data.datasets,
-                borderColor: ['rgba(255,99,132,1)'],
-                pointBorderColor: ['rgba(54, 162, 235, 1)'],
+                borderColor: ['#ff6384'],
+                pointBorderColor: ['#36a2eb'],
                 fill: "false"
             }]
         },
@@ -369,14 +376,14 @@ function avgRespCloseChart(stats, distributionSteps){
         datasets: [
             {
                 label: "Tempo prima risposta",
-                backgroundColor: 'rgba(54, 162, 235, 1)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: '#36a2eb',
+                borderColor: '#36a2eb',
                 data: stats.firstRespDistributed
             },
             {
                 label: "Tempo chiusura Ticket",
-                backgroundColor: 'rgba(255,99,132,1)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: '#ff6384)',
+                borderColor: '#36a2eb',
                 data: stats.closeDistributed
             }
         ]
@@ -399,26 +406,30 @@ function avgRespCloseChart(stats, distributionSteps){
     });
 }
 
-function evaluateLabelsChart(stats){
-    var ctx = document.getElementById("evaluateLabelsChart")
+//label presence
+function evaluateLabelsChart(stats, maxLabels){
+    var ctx = document.getElementById("evaluateLabelsChart");
 
     data = {
-        datasets: {
-            data: []
-        },
+        datasets: [{
+ 				data: [],
+ 				backgroundColor: []
+ 			 },
+        ],
         labels: []
     };
 
-    countFirstLabels = 10;
+    countFirstLabels = maxLabels;
+    data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384'];
     stats.forEach(function(label){
         if(countFirstLabels>0){
             data.labels.push(label[0]);
-            data.datasets.data.push(label[1]);
+            data.datasets[0].data.push(label[1]);
             countFirstLabels--;
         }
         else{
-            data.labels[data.labels.length-1] = "Altro";
-            data.datasets.data[data.datasets.data.length-1] += label[1];
+            data.labels[data.labels.length-1] = "Altre label";
+            data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
         }
     });
 
@@ -427,10 +438,17 @@ function evaluateLabelsChart(stats){
         data: data,
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             layout: {
                 padding: 10
-            }
+            },
+            legend: {
+            	position: "left"
+            },
+            title: {
+            display: true,
+            text: 'Label più utilizzate'
+        }
         }
     });
 }
@@ -440,7 +458,7 @@ function fillHTML(){
     //graphs
     firstRespChart(repo.stats, AVG_DIST_STEPS);
     closeChart(repo.stats, AVG_DIST_STEPS)
-    evaluateLabelsChart(repo.stats.evaluateLabels);
+    evaluateLabelsChart(repo.stats.evaluateLabels, MAX_LABELS);
     //other panels
     $("#name").html(ownerName + "/" + repoName);
     $("#nTicket").html(repo.stats.nCloseIssues + repo.stats.nOpenIssues);

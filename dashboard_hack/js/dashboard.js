@@ -1,3 +1,4 @@
+//this is just a comment
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const token = "cf72f9a1eac45a1b58da4aedb202795d095689da";

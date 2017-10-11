@@ -81,13 +81,22 @@ function apiCall(callNumber) {
         
 
         $.ajax({
-            url : "../dashboard_hack/token.txt",
+            url : "../dashboard_hack/tokenPartOne.txt",
             dataType: "text",
             success : function (data) {
                 tokenPartOne = data;
             },
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
-        });     
+        });    
+        
+        $.ajax({
+            url : "../dashboard_hack/tokenPartTwo.txt",
+            dataType: "text",
+            success : function (data) {
+                tokenPartOne = data;
+            },
+            async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
+        });
 
         //send call
         $.ajax({

@@ -23,13 +23,12 @@ var hasNextPage;
 $("document").ready(function(){
 
 	$(document).ajaxStart(function() {
-          	$("#loading").show();
-          	$('#loadingBack').fadeIn(400);
-      	}).ajaxStop(function() {
-          	$("#loading").hide();
-          	$("#loadingBack").fadeOut(250);
-          });  
-    
+        $("#loading").show();
+        $('#loadingBack').fadeIn(400);
+    }).ajaxStop(function() {
+        $("#loading").hide();
+        $("#loadingBack").fadeOut(250);
+    });    
     
 	apiCall(1);	
 });
@@ -77,7 +76,8 @@ function apiCall(callNumber) {
             "  }" +
             "}",
             variables: { lastRead: lastRead },
-        });
+        });          
+        
 
         $.ajax({
             url : "../dashboard_hack/token.txt",
@@ -85,10 +85,8 @@ function apiCall(callNumber) {
             success : function (data) {
                 token = data;
             },
-            async: false
-        });
-
-        console.log(token);
+            async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
+        });     
 
         //send call
         $.ajax({
@@ -127,7 +125,8 @@ function apiCall(callNumber) {
                     Object.assign(repo.stats, statistics(repo.allIssues, AVG_DIST_STEPS));
                     fillHTML();
                 }
-            }
+            }                      
+            
         });
     }
 }

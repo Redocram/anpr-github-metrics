@@ -93,7 +93,7 @@ function apiCall(callNumber) {
             url : "../dashboard_hack/tokenPartTwo.txt",
             dataType: "text",
             success : function (data) {
-                tokenPartOne = data;
+                tokenPartTwo = data;
             },
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
         });
@@ -102,7 +102,7 @@ function apiCall(callNumber) {
         $.ajax({
             method: 'post',
             data: query,
-            url: "https://api.github.com/graphql?access_token=" + tokenPartOne,
+            url: "https://api.github.com/graphql?access_token=" + tokenPartOne + tokenPartTwo,
             success: function(response){
                 //var currentIssue = new Object();
                 response.data.repository.issues.edges.forEach(function (issue) {

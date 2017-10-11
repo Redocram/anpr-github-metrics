@@ -1,8 +1,7 @@
-//this is just a comment
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 7;
-const token = "4ce66352cef1e5faa1fb8361f60e4f51db78d595";
+var token = "c";
 var ownerName = "italia";
 var repoName = "anpr";
 
@@ -29,8 +28,9 @@ $("document").ready(function(){
       	}).ajaxStop(function() {
           	$("#loading").hide();
           	$("#loadingBack").fadeOut(250);
-      	});
-
+          });  
+    
+    
 	apiCall(1);	
 });
 
@@ -78,6 +78,17 @@ function apiCall(callNumber) {
             "}",
             variables: { lastRead: lastRead },
         });
+
+        $.ajax({
+            url : "../dashboard_hack/token.txt",
+            dataType: "text",
+            success : function (data) {
+                token = data;
+            },
+            async: false
+        });
+
+        console.log(token);
 
         //send call
         $.ajax({

@@ -1,7 +1,8 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 7;
-var token = "c";
+var tokenPartOne = "c";
+var tokenPartTwo = "c";
 var ownerName = "italia";
 var repoName = "anpr";
 
@@ -83,7 +84,7 @@ function apiCall(callNumber) {
             url : "../dashboard_hack/token.txt",
             dataType: "text",
             success : function (data) {
-                token = data;
+                tokenPartOne = data;
             },
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
         });     
@@ -92,7 +93,7 @@ function apiCall(callNumber) {
         $.ajax({
             method: 'post',
             data: query,
-            url: "https://api.github.com/graphql?access_token=" + token,
+            url: "https://api.github.com/graphql?access_token=" + tokenPartOne,
             success: function(response){
                 //var currentIssue = new Object();
                 response.data.repository.issues.edges.forEach(function (issue) {

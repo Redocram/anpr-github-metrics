@@ -57,4 +57,6 @@ fabric.properties
 !.vscode/extensions.json
 
 # File Token
-dashboard_hack/token.txt
+dashboard_hack/tokenPartOne.txt
+dashboard_hack/tokenPartTwo.txt
+

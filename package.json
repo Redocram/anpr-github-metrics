@@ -2,7 +2,7 @@
   "name": "anpr-github-metrics",
   "version": "1.0.0",
   "description": "This project uses Js and jQuery library to track the issues on anpr repo.",
-  "main": "index.js",
+  "main": "dashboard_hack/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Redocram/anpr-github-metrics/issues"
   },
-  "homepage": "https://github.com/Redocram/anpr-github-metrics#readme"
+  "homepage": "https://github.com/Redocram/anpr-github-metrics#readme",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "express": "^4.16.2",
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.12.3"
+  }
 }

@@ -1,3 +1,5 @@
+console.log("porcospino");
+
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
@@ -26,3 +28,5 @@ function update(obj){
         }
     });
 }
+
+window.open('dashboard.html');

@@ -20,6 +20,7 @@
     "bluebird": "^3.5.1",
     "express": "^4.16.2",
     "mongodb": "^2.2.33",
-    "mongoose": "^4.12.3"
+    "mongoose": "^4.12.3",
+    "opn": "^5.1.0"
   }
 }

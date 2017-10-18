@@ -1,32 +1,14 @@
-console.log("porcospino");
-
-var express = require('express');
-var app = express();
-var mongoose = require('mongoose');
-var port = 3000;
-var Issue = require('models/issues');
+var http = require('http'),
+fs = require('fs');
 
 
-
-
-function update(obj){
-    var id = obj._id;
-    Item.findById(id, function (err, item) {
-        if(!item){
-            item.save().then(function (item) {
-                console.log('salvato');
-            }).catch(function (err) {
-                //res.status(400).send("unable to save to database");
-            });
-        }else{
-            item.item = req.body.item;
-            item.save().then(function (item) {
-                console.log('salvato');
-            }).catch(function (err) {
-                //res.status(400).send("unable to update the database");
-            });
-        }
-    });
-}
-
-window.open('dashboard.html');
+fs.readFile('./dashboard.html', function (err, html) {
+if (err) {
+    throw err; 
+}       
+http.createServer(function(request, response) {  
+    response.writeHeader(200, {"Content-Type": "text/html"});  
+    response.write(html);  
+    response.end();  
+}).listen(8000);
+});

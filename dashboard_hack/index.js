@@ -1,17 +1,27 @@
-var http = require('http'),
-fs = require('fs');
+const express = require('express');
+const app = express();
+app.use(express.static('dashboard_hack'));
 
-
-fs.readFile('dashboard_hack/dashboard.html', function (err, html) {
-if (err) {
-    throw err; 
-}       
-http.createServer(function(request, response) {  
-    response.writeHeader(200, {"Content-Type": "text/html"});  
-    response.write(html);  
-    response.end();  
-}).listen(8000);
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!')
 });
+///QUESTO CODICE FUNZIONA MA CARICA SOLO IL FILE html SENZA IMMAGINI
+
+// var http = require('http'),
+// fs = require('fs');
+
+// fs.readFile('dashboard_hack/dashboard.html', function (err, html) {
+// if (err) {
+//     throw err; 
+// }       
+// http.createServer(function(request, response) {  
+//     response.writeHeader(200, {"Content-Type": "text/html"});  
+//     response.write(html);  
+//     response.end();  
+// }).listen(8000);
+// });
+
+///CODICE DI ESEMPIO DI HEROKU
 
 // var cool = require('cool-ascii-faces');
 // var express = require('express');

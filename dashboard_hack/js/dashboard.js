@@ -81,7 +81,7 @@ function apiCall(callNumber) {
         
 
         $.ajax({
-            url : "../dashboard_hack/tokenPartOne.txt",
+            url : "tokenPartOne.txt",
             dataType: "text",
             success : function (data) {
                 tokenPartOne = data;
@@ -90,7 +90,7 @@ function apiCall(callNumber) {
         });    
         
         $.ajax({
-            url : "../dashboard_hack/tokenPartTwo.txt",
+            url : "tokenPartTwo.txt",
             dataType: "text",
             success : function (data) {
                 tokenPartTwo = data;

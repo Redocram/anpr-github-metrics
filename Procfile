@@ -1,0 +1,1 @@
+web: node --inspect dashboard_hack/index.js

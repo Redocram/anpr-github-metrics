@@ -1,7 +1,8 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 7;
-const token = "4ce66352cef1e5faa1fb8361f60e4f51db78d595";
+var tokenPartOne = "c";
+var tokenPartTwo = "c";
 var ownerName = "italia";
 var repoName = "anpr";
 
@@ -23,13 +24,13 @@ var hasNextPage;
 $("document").ready(function(){
 
 	$(document).ajaxStart(function() {
-          	$("#loading").show();
-          	$('#loadingBack').fadeIn(400);
-      	}).ajaxStop(function() {
-          	$("#loading").hide();
-          	$("#loadingBack").fadeOut(250);
-      	});
-
+        $("#loading").show();
+        $('#loadingBack').fadeIn(400);
+    }).ajaxStop(function() {
+        $("#loading").hide();
+        $("#loadingBack").fadeOut(250);
+    });    
+    
 	apiCall(1);	
 });
 
@@ -76,13 +77,32 @@ function apiCall(callNumber) {
             "  }" +
             "}",
             variables: { lastRead: lastRead },
+        });          
+        
+
+        $.ajax({
+            url : "tokenPartOne.txt",
+            dataType: "text",
+            success : function (data) {
+                tokenPartOne = data;
+            },
+            async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
+        });    
+        
+        $.ajax({
+            url : "tokenPartTwo.txt",
+            dataType: "text",
+            success : function (data) {
+                tokenPartTwo = data;
+            },
+            async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
         });
 
         //send call
         $.ajax({
             method: 'post',
             data: query,
-            url: "https://api.github.com/graphql?access_token=" + token,
+            url: "https://api.github.com/graphql?access_token=" + tokenPartOne + tokenPartTwo,
             success: function(response){
                 //var currentIssue = new Object();
                 response.data.repository.issues.edges.forEach(function (issue) {
@@ -115,7 +135,8 @@ function apiCall(callNumber) {
                     Object.assign(repo.stats, statistics(repo.allIssues, AVG_DIST_STEPS));
                     fillHTML();
                 }
-            }
+            }                      
+            
         });
     }
 }

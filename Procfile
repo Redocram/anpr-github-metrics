@@ -1,1 +1,1 @@
-web: node dashboard_hack/index.js
+web: node --inspect dashboard_hack/index.js

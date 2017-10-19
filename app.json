@@ -1,0 +1,8 @@
+{
+  "name": "itsdashboard",
+  "description": "This project uses Js and jQuery library to track the issues on anpr repo.",
+  "repository": "https://github.com/Redocram/anpr-github-metrics.git",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}

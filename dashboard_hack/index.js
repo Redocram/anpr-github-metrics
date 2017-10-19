@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.static('dashboard_hack'));
 
-app.listen(3000, function () {
+app.listen(5000, function () {
   console.log('Example app listening on port 3000!')
 });
 ///QUESTO CODICE FUNZIONA MA CARICA SOLO IL FILE html SENZA IMMAGINI

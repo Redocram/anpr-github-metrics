@@ -1,19 +1,20 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
-const MAX_LABELS = 7;
+const MAX_LABELS = 6;
 var tokenPartOne = "c";
 var tokenPartTwo = "c";
 var ownerName = "italia";
 var repoName = "anpr";
 
 var repo = {
+    name: repoName,
     allIssues: [],
     stats: {
-        nOpenIssues: 0,
-        nOpenIssuesNoLabel: 0,
-        nCloseIssues: 0,
-        nCloseIssuesNoComments: 0,
-        totalIssue: 0
+        //nOpenIssues: 0,
+        //nOpenIssuesNoLabel: 0,
+        //nClosedIssues: 0,
+        //nClosedIssuesNoComments: 0,
+        //totalIssues: 0
     }
 };
 
@@ -80,7 +81,7 @@ function apiCall(callNumber) {
         });          
         
 
-        $.ajax({
+        /*$.ajax({
             url : "tokenPartOne.txt",
             dataType: "text",
             success : function (data) {
@@ -96,32 +97,34 @@ function apiCall(callNumber) {
                 tokenPartTwo = data;
             },
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
-        });
+        });*/
+
+        var token = "d3f1cc5ba914004fc648c81a30597580053e25e9";
 
         //send call
         $.ajax({
             method: 'post',
             data: query,
-            url: "https://api.github.com/graphql?access_token=" + tokenPartOne + tokenPartTwo,
+            url: "https://api.github.com/graphql?access_token=" + /*tokenPartOne + tokenPartTwo*/token,
             success: function(response){
                 //var currentIssue = new Object();
                 response.data.repository.issues.edges.forEach(function (issue) {
-                    var closedAt = 0;
-                    if (issue.node.closed) {
-                        repo.stats.nCloseIssues++;
-                        if (issue.node.comments.totalCount == 0)
-                            repo.stats.nCloseIssuesNoComments++;
-                        issue.node.timeline.nodes.forEach(function (node) {
+                    //var closedAt = 0;
+                    //if (issue.node.closed) {
+                        //repo.stats.nClosedIssues++;
+                        //if (issue.node.comments.totalCount == 0)
+                            //repo.stats.nClosedIssuesNoComments++;
+                        /*issue.node.timeline.nodes.forEach(function (node) {
                             if(node.createdAt)
                                 closedAt = node.createdAt;
-                        });
-                    }
-                    else {
+                        });*/
+                    //}
+                    /*else {
                         repo.stats.nOpenIssues++;
                         if(issue.node.labels.totalCount==0)
                             repo.stats.nOpenIssuesNoLabel++;
-                    }
-                    var currentIssue = parseComments(issue, closedAt);
+                    }*/
+                    var currentIssue = parseIssue(issue);
                     repo.allIssues.push(currentIssue);
                 });
 
@@ -141,15 +144,18 @@ function apiCall(callNumber) {
     }
 }
 
-//cleans json response
-function parseComments(issue, closedAt){
+//cleans json responses
+function parseIssue(issue){
     var currentIssue = {
         createdAt: 0,
         labels: [],
         firstResponseTime: 0,
-        closedAt: 0,
-        closeTime: 0
+        //closedAt: 0,
+        //closeTime: 0,
+        //totalComments: 0
     };
+
+    console.log(issue);
 
     var dateIssue = new Date(issue.node.createdAt).getTime();
     issue.node.labels.nodes.forEach(function(label){
@@ -157,14 +163,24 @@ function parseComments(issue, closedAt){
     });
 
     if(issue.node.comments.edges.length != 0){
+        //currentIssue.totalComments = issue.node.comments.totalCount;
         var firstResponse = new Date(issue.node.comments.edges[0].node.createdAt).getTime();
         currentIssue.firstResponseTime = firstResponse - dateIssue;
     }
     currentIssue.createdAt = dateIssue;
-    if(closedAt !== 0){
-        currentIssue.closedAt = new Date(closedAt).getTime();
-        currentIssue.closeTime = currentIssue.closedAt - dateIssue;
+    if(issue.node.closed){
+        issue.node.timeline.nodes.forEach(function (node) {
+            if(node.createdAt){
+                currentIssue.closedAt = new Date(node.createdAt).getTime();
+                currentIssue.closeTime = currentIssue.closedAt - dateIssue;
+            }
+        });
+
+        //currentIssue.closedAt = new Date(closedAt).getTime();
+        //currentIssue.closeTime = currentIssue.closedAt - dateIssue;
     }
+
+
     return currentIssue;
 }
 
@@ -174,69 +190,81 @@ function statistics (arrayIssues, distributionSteps){
     var stats = {
         firstRespDistributed: [],
         evaluateLabels: [],
-        firstAverage: {},
+        firstRespAverage: {},
         closeDistributed: [],
-        closeAverage: {}
+        closeAverage: {},
+        totalIssues: 0,
+        nClosedIssues: 0,
+        nClosedIssuesNoComments: 0,
+        nOpenIssues: 0
     };
     
-    var firstAverage = 0;
+    var firstRespAverage = 0;
     var totalCommented = 0;
     var closeAverage = 0;
-    var totalClosed = 0;
     var evaluateLabels = Object();
 
-    for (var i = 0; i < distNumber; i++) {
+    for (var i = 0; i < distNumber; i ++) {
         stats.firstRespDistributed.push(0);
         stats.closeDistributed.push(0);
     }
-
+    stats.totalIssues = arrayIssues.length;
     arrayIssues.forEach(function(issue){
         if(issue.firstResponseTime){
-            firstAverage += issue.firstResponseTime;
+            firstRespAverage += issue.firstResponseTime;
             totalCommented ++;
         }
+
         if(issue.closeTime){
         	closeAverage += issue.closeTime;
-        	totalClosed++;
+        	stats.nClosedIssues ++;
+            if (issue.totalComments == 0)
+                stats.nClosedIssuesNoComments++;
         }
+        else {
+            stats.nOpenIssues ++;
+            if(issue.labels.length == 0)
+                stats.nOpenIssuesNoLabel++;
+        }
+
         if(issue.labels.length>0){
             issue.labels.forEach(function(label){
                 if(!evaluateLabels[label]){
                     evaluateLabels[label] = 0;
                 }
-                evaluateLabels[label]++;
+                evaluateLabels[label] ++;
             });
         }
 
         var curFirstResp = issue.firstResponseTime;
         var curCloseTime = issue.closeTime;
-        var oreResp = curFirstResp/3600000;
-        var oreClose = curCloseTime/3600000;
+        var oreResp = curFirstResp / 3600000;
+        var oreClose = curCloseTime / 3600000;
         var esc = 0;
-        for (var i = 0; i < distNumber-1; i++) {
+        for (var i = 0; i < distNumber-1; i ++) {
             if(oreResp<distributionSteps[i]){
-                stats.firstRespDistributed[i]++;
-                curFirstResp=null;
+                stats.firstRespDistributed[i] ++;
+                curFirstResp = null;
                 esc = 1;
             }
             if(oreClose<distributionSteps[i]){
-            	stats.closeDistributed[i]++;
-            	curCloseTime=null;
+            	stats.closeDistributed[i] ++;
+            	curCloseTime = null;
             	esc = 1;
             }
-            if(esc==1)
+            if(esc == 1)
             	break;
         }
         if(curFirstResp){
-            stats.firstRespDistributed[distNumber-1]++;
+            stats.firstRespDistributed[distNumber-1] ++;
         }
         if(curCloseTime){
-        	stats.closeDistributed[distNumber-1]++;
+        	stats.closeDistributed[distNumber-1] ++;
         }
     });
 
-    stats.firstAverage = convertMilliseconds(Math.floor(firstAverage / totalCommented));
-    stats.closeAverage = convertMilliseconds(Math.floor(closeAverage / totalClosed));
+    stats.firstRespAverage = convertMilliseconds(Math.floor(firstRespAverage / totalCommented));
+    stats.closeAverage = convertMilliseconds(Math.floor(closeAverage / stats.nClosedIssues));
     stats.evaluateLabels = sortLabels(evaluateLabels);
 
     return stats;
@@ -245,15 +273,15 @@ function statistics (arrayIssues, distributionSteps){
 // ------------------------------------ formatting & converting -----------------------------------------//
 function convertMilliseconds (ms){
     var convertedMs = new Object();
-    var ms = Math.floor(ms/60000);
-    convertedMs.Minutes = ms%60;
-    ms = Math.floor(ms/60);
-    convertedMs.Hours = ms%24;
-    ms = Math.floor(ms/24);
-    convertedMs.Days = ms%30;
-    ms = Math.floor(ms/30);
-    convertedMs.Months = ms%12;
-    ms = Math.floor(ms/12);
+    var ms = Math.floor(ms / 60000);
+    convertedMs.Minutes = ms % 60;
+    ms = Math.floor(ms / 60);
+    convertedMs.Hours = ms % 24;
+    ms = Math.floor(ms / 24);
+    convertedMs.Days = ms % 30;
+    ms = Math.floor(ms / 30);
+    convertedMs.Months = ms % 12;
+    ms = Math.floor(ms / 12);
     convertedMs.Years = ms;
 
     return convertedMs;
@@ -261,20 +289,20 @@ function convertMilliseconds (ms){
 
 function humanizeHours(hours){
 	var humanized;
-	if(typeof hours=="string")
+	if(typeof hours == "string")
 		humanized = hours;
-	else if(hours<24)
+	else if(hours < 24)
 		humanized = hours + "hr";
-	else if(hours<168)
-		humanized = (hours/24) + "d";
+	else if(hours < 168)
+		humanized = (hours / 24) + "d";
 	else
-		humanized = (hours/168) + "w";
+		humanized = (hours / 168) + "w";
 
 	return humanized;
 }
 
 function avgToString(avg){
-    var parsedAvg = avg.Years!=0 ? avg.Years + "Y : " : "";
+    var parsedAvg = avg.Years != 0 ? avg.Years + "Y : " : "";
     parsedAvg += avg.Months + "M : ";
     parsedAvg += avg.Days + "D<br/>";
     parsedAvg += avg.Hours + "h : ";
@@ -313,7 +341,7 @@ function firstRespChart(stats, distributionSteps){
     };
 
     //data.labels = distributionSteps;
-    for (var i = 0; i < distributionSteps.length; i++) {
+    for (var i = 0; i < distributionSteps.length; i ++) {
         coord = new Object();
         coord.x = distributionSteps[i];
         coord.y = stats.firstRespDistributed[i];
@@ -343,7 +371,6 @@ function firstRespChart(stats, distributionSteps){
     });
 }
 
-
 //close times distributed
 function closeChart(stats, distributionSteps){
     var humanReadableSteps = new Array();	//human readable distribution steps
@@ -358,7 +385,7 @@ function closeChart(stats, distributionSteps){
     };
 
     //data.labels = distributionSteps;
-    for (var i = 0; i < distributionSteps.length; i++) {
+    for (var i = 0; i < distributionSteps.length; i ++) {
         coord = new Object();
         coord.x = distributionSteps[i];
         coord.y = stats.closeDistributed[i];
@@ -481,11 +508,11 @@ function fillHTML(){
     evaluateLabelsChart(repo.stats.evaluateLabels, MAX_LABELS);
     //other panels
     $("#name").html(ownerName + "/" + repoName);
-    $("#nTicket").html(repo.stats.nCloseIssues + repo.stats.nOpenIssues);
-    $('#avgFirstTime').html(avgToString(repo.stats.firstAverage));
+    $("#nTicket").html(repo.stats.nClosedIssues + repo.stats.nOpenIssues);
+    $('#avgFirstTime').html(avgToString(repo.stats.firstRespAverage));
     $('#avgCloseTime').html(avgToString(repo.stats.closeAverage));
     $('#tOpen').html(repo.stats.nOpenIssues);
-    $('#tClosed').html(repo.stats.nCloseIssues);
-    $("#closedNoComments").html(repo.stats.nCloseIssuesNoComments);
+    $('#tClosed').html(repo.stats.nClosedIssues);
+    $("#closedNoComments").html(repo.stats.nClosedIssuesNoComments);
     $("#openNoLabel").html(repo.stats.nOpenIssuesNoLabel);
 }

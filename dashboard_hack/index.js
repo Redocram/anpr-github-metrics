@@ -2,14 +2,16 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+app.set('port', (process.env.PORT || 5000));
+
 app.use(express.static('dashboard_hack'));
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/dashboard.html'));
 });
 
-app.listen(5000, function () {
-  console.log('Example app listening on port 5000!')
+app.listen(app.get('port'), function () {
+  console.log('Example app listening on port ', app.get('port'))
 });
 ///QUESTO CODICE FUNZIONA MA CARICA SOLO IL FILE html SENZA IMMAGINI
 

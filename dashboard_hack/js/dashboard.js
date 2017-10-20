@@ -81,7 +81,7 @@ function apiCall(callNumber) {
         });          
         
 
-        /*$.ajax({
+        $.ajax({
             url : "tokenPartOne.txt",
             dataType: "text",
             success : function (data) {
@@ -97,15 +97,14 @@ function apiCall(callNumber) {
                 tokenPartTwo = data;
             },
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
-        });*/
+        });
 
-        var token = "d3f1cc5ba914004fc648c81a30597580053e25e9";
 
         //send call
         $.ajax({
             method: 'post',
             data: query,
-            url: "https://api.github.com/graphql?access_token=" + /*tokenPartOne + tokenPartTwo*/token,
+            url: "https://api.github.com/graphql?access_token=" + tokenPartOne + tokenPartTwo,
             success: function(response){
                 //var currentIssue = new Object();
                 response.data.repository.issues.edges.forEach(function (issue) {

@@ -1,8 +1,10 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 6;
-var tokenPartOne = "c";
-var tokenPartTwo = "c";
+//var tokenPartOne = "c";
+//var tokenPartTwo = "c";
+var config = {};
+
 var ownerName = "italia";
 var repoName = "anpr";
 
@@ -81,16 +83,16 @@ function apiCall(callNumber) {
         });          
         
 
-        /*$.ajax({
-            url : "tokenPartOne.txt",
-            dataType: "text",
+        $.ajax({
+            url : "config.json",
+            dataType: "json",
             success : function (data) {
-                tokenPartOne = data;
+                config = data;
             },
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
         });    
         
-        $.ajax({
+        /*$.ajax({
             url : "tokenPartTwo.txt",
             dataType: "text",
             success : function (data) {
@@ -99,13 +101,11 @@ function apiCall(callNumber) {
             async: false //a tutti quelli a cui non piace quello che ho fatto, leggete prima questo sito: http://callbackhell.com/                 
         });*/
 
-        var token = "d3f1cc5ba914004fc648c81a30597580053e25e9";
-
         //send call
         $.ajax({
             method: 'post',
             data: query,
-            url: "https://api.github.com/graphql?access_token=" + /*tokenPartOne + tokenPartTwo*/token,
+            url: "https://api.github.com/graphql?access_token=" + /*tokenPartOne + tokenPartTwo*/config.userToken,
             success: function(response){
                 //var currentIssue = new Object();
                 response.data.repository.issues.edges.forEach(function (issue) {

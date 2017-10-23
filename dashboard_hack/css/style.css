@@ -6,22 +6,26 @@ body{
 .headboard {
 	background-color: #0066CC;
 	color: #ffffff;
-	padding: 15px 35px;
-	font-size: 20px;
+	padding: 15px 35px 10px;
 	margin-bottom: 0;
 	left: 0;
 	right: 0;
 	position: fixed;
 	z-index: 2;
 }
+
+.headboard > h1 {
+	display: inline-block;
+	padding-top: 5px;
+	font-size: 20px;
+	vertical-align: middle;
+}
 /*------------------ right navbar ------------------------*/
 .myNavbar {
-	background-color: #8ebeed;
-	position: fixed !important;
-	top:0;
-	bottom: 0;
-	z-index: 1;
-	padding-top: 80px;
+	color: #ffffff;
+	right: 0;
+	float: right;
+	vertical-align: middle;
 }
 
 .myNavbar::before,
@@ -34,15 +38,69 @@ body{
     clear: both;
 }
 
+.myNavbar li > a:active, 
+.myNavbar li > a:hover {
+	color: #8ebeed;
+	font-weight: bold;
+}
+
+.dropdown-menu > a:active,
+.dropdown-menu > a:hover{
+	background-color: #8ebeed;
+	color: #ffffff;
+}
+
 .nav-link {
 	color: #ffffff;
 	line-height: 25px;
 	font-size: 16px;
 }
 
+.btn-primary {
+	top: 0;
+    padding: 5px 7px;
+    float: left;
+    display: inline-block;
+}
+
+.btn-primary > img {
+	width: 20px;
+	display: inline-block;
+}
+
+.dropdown-menu {
+	width: 200px;
+	height: auto;
+	right: 0;
+	top: 50px;
+}
+.dropline {
+	border-bottom: 1px solid #8ebeed;
+	padding-bottom: 10px;
+}
+.dropline > form {
+	padding: 0 7px;
+}
+
+.dropline::before,
+.dropline::after {
+    display: table;
+    content: "";
+}
+
+.dropline:after{
+    clear: both;
+}
+
+.form-control {
+	width: 130px;
+	float: left;
+	display: inline-block;
+}
+
 /*------------------ statistics blocks ------------------------*/
 .total {
-	margin-top: 50px;
+	margin-top: 70px;
 	width: 100%;
 }
 
@@ -55,11 +113,15 @@ body{
 
 .titleRepository > h5 {
 	display: inline-block;
-	padding: 5px 10px;
+	padding: 5px 20px;
 }
 
 .titleRepository > h2 {
 	display: inline-block;
+}
+
+.badge {
+	margin: 10px 15px;
 }
 
 .eqMargin {

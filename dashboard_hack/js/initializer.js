@@ -51,7 +51,7 @@ function apiReposCall(callNumber) {
             "	}" +
             "  }" +
             "}",
-            variables: { lastRead: lastRead },
+            variables: { lastRead: lastRead }
         });             
 
         //send call
@@ -98,7 +98,7 @@ function parseRepo(repository){
     var currentRepo = {
     	name: "",
     	url: "",
-    	totIssues: 0,
+    	totIssues: 0
 	};
 
 	currentRepo.totIssues = repository.issues.totalCount; 

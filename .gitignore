@@ -50,8 +50,6 @@ typings/
 # Optional REPL history
 .node_repl_history
 
-# File Token
-dashboard_hack/token.txt
 # Output of 'npm pack'
 *.tgz
 

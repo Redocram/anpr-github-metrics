@@ -1,0 +1,31 @@
+{
+  "name": "repoapi",
+  "version": "1.0.0",
+  "description": "RESTful repoApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodejs server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Redocram/anpr-github-metrics.git"
+  },
+  "keywords": [
+    "RESTful",
+    "API"
+  ],
+  "author": "ITS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Redocram/anpr-github-metrics/issues"
+  },
+  "homepage": "https://github.com/Redocram/anpr-github-metrics/#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongose": "0.0.2-security"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}

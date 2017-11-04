@@ -26,7 +26,6 @@ console.log(new Date().toLocaleString() + '\tstarting Repos query');
 apiReposCall(callNumber);
 
 // ------------- repo calls and parse ----------------//
-//query
 function apiReposCall(callNumber) {
     if((callNumber==1 || hasNextPage === true)) {
         var query = JSON.stringify({
@@ -78,76 +77,69 @@ function apiReposCall(callNumber) {
 function workOnResponse(res) {
     //console.log('statusCode:', res.statusCode);
     //console.log('headers:', res.headers);
-
-    res.on('data', fillData);
-
-        res.on('end', dataToJson);
-}
-
-function fillData(chunck) {
-    responseData+=chunck;
-}
-
-function dataToJson() {
-
-    gitHubResponse = JSON.parse(responseData)
-
-    fillRepos();
-
-    initiliazeHasNextPageAndLastRead();
-
-    gitHubResponseHasNextPage();
-}
-
-function fillRepos() {
-    gitHubResponse.data.organization.repositories.nodes.forEach(function (repository) {
-        let currentRepo = parseRepo(repository);
-        repos.push(currentRepo);
-        if(currentRepo.totIssues > 0)
-            dbTrigger++;
+    let body = '';
+    res.on('data', function(resData){
+    	body += resData;
     });
-}
+    res.on('end', function(){
+    	gitHubResponse = JSON.parse(body);
+    	body = '';
+    });
+    res.on('end', fillRepos);
+    res.on('end', initiliazeHasNextPageAndLastRead);
+    res.on('end', gitHubResponseHasNextPage);
 
-function initiliazeHasNextPageAndLastRead() {
-    hasNextPage = gitHubResponse.data.organization.repositories.pageInfo.hasNextPage;
-    lastRead = gitHubResponse.data.organization.repositories.pageInfo.endCursor;
-}
+    function fillRepos() {
+	    gitHubResponse.data.organization.repositories.nodes.forEach(function (repository) {
+	        let currentRepo = parseRepo(repository);
+	        repos.push(currentRepo);
+	        if(currentRepo.totIssues > 0)
+	            dbTrigger++;
+	    });
+	}
+
+	function parseRepo(repository){
+	    let newRepo = {
+	        name: "",
+	        url: "",
+	        totIssues: 0,
+	    };
+
+	    newRepo.totIssues = repository.issues.totalCount;
+	    newRepo.name = repository.name;
+	    newRepo.url = repository.url;
+	    totalIssues += newRepo.totIssues;
+	    return newRepo;
+	}
+
+	function initiliazeHasNextPageAndLastRead() {
+	    hasNextPage = gitHubResponse.data.organization.repositories.pageInfo.hasNextPage;
+	    lastRead = gitHubResponse.data.organization.repositories.pageInfo.endCursor;
+	}
 
 
-function gitHubResponseHasNextPage() {
-    gitHubResponse = null;
-    responseData = '';
-    if (hasNextPage === true) {
-        apiReposCall(++callNumber)
-    }
-    else {
-    	console.log(new Date().toLocaleString() + '\tended Repos query');
-    	console.log(new Date().toLocaleString() + '\tstarting Issues query');
-        callNumber = 1;
-        repos.forEach(function (repo) {
-            if(repo.totIssues > 0){
-                apiIssuesCall(repo, callNumber);    //start issues calls on repos calls ended
-            }
-        });
-    }
-}
-
-function parseRepo(repository){
-    let newRepo = {
-        name: "",
-        url: "",
-        totIssues: 0,
-    };
-
-    newRepo.totIssues = repository.issues.totalCount;
-    newRepo.name = repository.name;
-    newRepo.url = repository.url;
-    totalIssues += newRepo.totIssues;
-    return newRepo;
+	function gitHubResponseHasNextPage() {
+	    gitHubResponse = null;
+	    responseData = '';
+	    if (hasNextPage === true) {
+	        apiReposCall(++callNumber)
+	    }
+	    else {
+	    	console.log(new Date().toLocaleString() + '\tended Repos query');
+	    	console.log(new Date().toLocaleString() + '\tstarting Issues query');
+	        callNumber = 1;
+	        repos.forEach(function (repo) {
+	            if(repo.totIssues > 0){
+	                apiIssuesCall(repo, callNumber);    //start issues calls on repos calls ended
+	                gitHubResponse = null;
+	                responseData = '';
+	            }
+	        });
+	    }
+	}
 }
 
 // ------------- api calls and parse ----------------//
-//query
 function apiIssuesCall(repo, callNumber) {
     if((callNumber==1 || hasNextPage === true) ) {
         //forming json request
@@ -217,113 +209,133 @@ function apiIssuesCall(repo, callNumber) {
         //console.log('statusCode:', res.statusCode);
         //console.log('headers:', res.headers);
 
-        res.on('data', fillData);
-
-        res.on('end', dataIssueToJson);
-
-    }
-
-    function dataIssueToJson() {
-
-        gitHubResponse = JSON.parse(responseData);
-
-        fillRepoIssues();
-        initiliazeIssueHasNextPageAndLastRead();
-        issueResponseHasNextPage();
-
-    }
-
-    function fillRepoIssues() {
-
-        if(typeof repo.issues == 'undefined')
-        {
-            repo.issues = [];
-        }
-        gitHubResponse.data.repository.issues.edges.forEach( function (issue) {
-            var currentIssue = parseIssue(issue);
-            repo.issues.push(currentIssue);
+        let body = '';
+        res.on('data', function (resData) {
+            body += resData;
         });
-    }
+        res.on('end', function () {
+            gitHubResponse = JSON.parse(body);
+            body = '';
+        });
+        res.on('end', fillRepoIssues);
+        res.on('end', initiliazeIssueHasNextPageAndLastRead);
+        res.on('end', issueResponseHasNextPage);
 
-    function initiliazeIssueHasNextPageAndLastRead (){
-        hasNextPage = gitHubResponse.data.repository.issues.pageInfo.hasNextPage;
-        lastRead = gitHubResponse.data.repository.issues.pageInfo.endCursor;
-    }
+        function fillRepoIssues() {
 
-    function issueResponseHasNextPage () {
-        gitHubResponse = null;
-        responseData = '';
-        if (hasNextPage === true) {
-            apiIssuesCall(repo, ++callNumber);
-        }
-        else {
-            if(--dbTrigger == 0)
-            {
-                /*ONLY FOR FINAL DEBUG*/
-                /*THIS FILE IS READY TO BE WRITTEN IN A DB*/
-                // fs.appendFile("reposFinale.json", JSON.stringify(repos), function(err) {
-                //     if(err) {
-                //         return console.log(err);
-                //     }
-                //
-                // });
-                console.log(new Date().toLocaleString() + '\tended Issues query');
-                console.log(new Date().toLocaleString() + '\tcalculating statistics');
-                repos.forEach(function(repo){
-                    if(repo.Issues){
-                        //calculate statistics if repo has issues
-                        var stats = statistics(repo.issues, AVG_DIST_STEPS);
-                        repo.stats = stats;
-                        delete repo.issues;
-                    }
-                });
-                console.log(new Date().toLocaleString() + '\tendend statistics');
-                console.log(new Date().toLocaleString() + '\tstarting db update');
-                //call the repoApi service and write to mongo
-                repos.forEach(function(repo){
-                    apiMongoCall(repo);
-                });
-                console.log(new Date().toLocaleString() + '\tended db update');
-                console.log('ALL PROCESSES CORRECTLY ENDED');
-                console.log(repos);
-            }
+	        if(typeof repo.issues == 'undefined'){
+	            repo.issues = [];
+	        }
+	        gitHubResponse.data.repository.issues.edges.forEach( function (issue) {
+	            var currentIssue = parseIssue(issue);
+	            repo.issues.push(currentIssue);
+	        });
+	    }
 
-        }
+	    function parseIssue(issue) {
+		    let currentIssue = {
+		        createdAt: 0,
+		        labels: [],
+		        firstResponseTime: 0
+		    };
+
+		    let dateIssue = new Date(issue.node.createdAt).getTime();
+		    if(issue.node.labels.nodes.length > 0){
+		        currentIssue.labels = [];
+		        issue.node.labels.nodes.forEach(function (label) {
+		            currentIssue.labels.push(label.name);
+		        });
+		    }
+
+		    if(issue.node.comments.edges.length != 0){
+		        let firstResponse = new Date(issue.node.comments.edges[0].node.createdAt).getTime();
+		        currentIssue.firstResponseTime = firstResponse - dateIssue;
+		    }
+
+		    currentIssue.createdAt = dateIssue;
+
+		    if(issue.node.closed){
+		        issue.node.timeline.nodes.forEach(function (node) {
+		            if(node.createdAt){
+		                currentIssue.closedAt = new Date(node.createdAt).getTime();
+		                currentIssue.closeTime = currentIssue.closedAt - dateIssue;
+		            }
+		        });
+		    }
+
+		    return currentIssue;
+		}
+
+	    function initiliazeIssueHasNextPageAndLastRead (){
+	        hasNextPage = gitHubResponse.data.repository.issues.pageInfo.hasNextPage;
+	        lastRead = gitHubResponse.data.repository.issues.pageInfo.endCursor;
+	    }
+
+	    function issueResponseHasNextPage () {
+	        gitHubResponse = null;
+	        responseData = '';
+	        if (hasNextPage === true) {
+	            apiIssuesCall(repo, ++callNumber);
+	        }
+	        else {
+	            if(--dbTrigger == 0)
+	            {
+	                /*ONLY FOR FINAL DEBUG*/
+	                /*THIS FILE IS READY TO BE WRITTEN IN A DB*/
+	                // fs.appendFile("reposFinale.json", JSON.stringify(repos), function(err) {
+	                //     if(err) {
+	                //         return console.log(err);
+	                //     }
+	                //
+	                // });
+	                console.log(new Date().toLocaleString() + '\tended Issues query');
+	                console.log(new Date().toLocaleString() + '\tcalculating statistics');
+	                repos.forEach(function(repo){
+	                    if(repo.Issues){
+	                        //calculate statistics if repo has issues
+	                        var stats = statistics(repo.issues, AVG_DIST_STEPS);
+	                        repo.stats = stats;
+	                        delete repo.issues;
+	                    }
+	                });
+	                console.log(new Date().toLocaleString() + '\tendend statistics');
+	                console.log(new Date().toLocaleString() + '\tstarting db update');
+	                //call the repoApi service and write to mongo
+	                repos.forEach(function(repo){
+	                    apiMongoCall(repo);
+	                });
+	                console.log(new Date().toLocaleString() + '\tended db update');
+	                console.log('ALL PROCESSES CORRECTLY ENDED');
+	                console.log(repos);
+	            }
+	        }
+	    }
     }
 }
 
-function parseIssue(issue) {
-    let currentIssue = {
-        createdAt: 0,
-        labels: [],
-        firstResponseTime: 0
-    };
+// -------------------- mongo repoApi calls -----------------------//
+function apiMongoCall(repo) {
+        //forming json request
+        var query = JSON.stringify(repo);
 
-    let dateIssue = new Date(issue.node.createdAt).getTime();
-    if(issue.node.labels.nodes.length > 0){
-        currentIssue.labels = [];
-        issue.node.labels.nodes.forEach(function (label) {
-            currentIssue.labels.push(label.name);
-        })
-    }
-
-    if(issue.node.comments.edges.length != 0){
-        let firstResponse = new Date(issue.node.comments.edges[0].node.createdAt).getTime();
-        currentIssue.firstResponseTime = firstResponse - dateIssue;
-    }
-
-    currentIssue.createdAt = dateIssue;
-
-    if(issue.node.closed){
-        issue.node.timeline.nodes.forEach(function (node) {
-            if(node.createdAt){
-                currentIssue.closedAt = new Date(node.createdAt).getTime();
-                currentIssue.closeTime = currentIssue.closedAt - dateIssue;
+        const options = {
+            hostname: 'http://localhost:3000/repos',
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Connection' : 'keep-alive',
+                'User-Agent' : 'My-Agent'
             }
-        })
-    }
+        };
 
-    return currentIssue;
+        const req = https.request(options, workOnIssueResponse);
+
+        req.on('error', (e) => {
+            console.error(e);
+        });
+        req.write(query);
+
+        req.end();
 }
 
 // ------------- issues statistics and utility functions ----------------//
@@ -426,29 +438,4 @@ function convertMilliseconds (ms){
     convertedMs.Years = ms;
 
     return convertedMs;
-}
-
-// -------------------- mongo repoApi calls -----------------------//
-function apiMongoCall(repo) {
-        //forming json request
-        var query = JSON.stringify(repo);
-
-        const options = {
-            hostname: 'http://localhost:3000/repos',
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Connection' : 'keep-alive',
-                'User-Agent' : 'My-Agent'
-            }
-        };
-
-        const req = https.request(options, workOnIssueResponse);
-
-        req.on('error', (e) => {
-            console.error(e);
-        });
-        req.write(query);
-
-        req.end();
 }

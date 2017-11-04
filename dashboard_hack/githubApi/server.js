@@ -294,23 +294,22 @@ function apiIssuesCall(repo, callNumber) {
                         delete repo.totIssues;
                     });
                     console.log(new Date().toLocaleString() + '\tendend statistics');
-                    console.log(repos);
-	                /*ONLY FOR FINAL DEBUG*/
-	                /*THIS FILE IS READY TO BE WRITTEN IN A DB*/
-	                /* fs.appendFile("reposStats.json", JSON.stringify(repos), function(err) {
-	                     if(err) {
-	                         return console.log(err);
-	                     }
-	                
-	                 });*/
+
 	                console.log(new Date().toLocaleString() + '\tstarting db update');
-	                //call the repoApi service and write to mongo
+	                /*call the repoApi service and write to mongo*/
 	                repos.forEach(function(repo){
 	                    apiMongoCall(repo);
 	                });
 	                console.log(new Date().toLocaleString() + '\tended db update');
 	                console.log('ALL PROCESSES CORRECTLY ENDED');
-	                console.log(repos);
+                    /*ONLY FOR FINAL DEBUG*/
+                    /*THIS FILE IS READY TO BE WRITTEN IN A DB*/
+                    // fs.appendFile("reposStats.json", JSON.stringify(repos), function(err) {
+                    //      if(err) {
+                    //          return console.log(err);
+                    //      }
+                    //
+                    //  });
 	            }
 	        }
 	    }
@@ -323,10 +322,10 @@ function apiMongoCall(repo) {
         var query = JSON.stringify(repo);
 
         const options = {
-            hostname: 'http://localhost',
+            hostname: 'localhost',
+            port: 3000,
             path: '/repos',
             method: 'POST',
-            port: '3000',
             headers: {
                 'Content-Type': 'application/json'/*,
                 'Connection' : 'keep-alive',
@@ -334,8 +333,11 @@ function apiMongoCall(repo) {
             }
         };
 
-        const req = http.request(options, function(){
+        const req = http.request(options, function(res){
             console.log("fatto");
+            res.on('data',function(data){
+                console.log(data);
+            });
         });
 
         req.on('error', (e) => {

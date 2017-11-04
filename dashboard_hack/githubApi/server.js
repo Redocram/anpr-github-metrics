@@ -1,6 +1,7 @@
 'use strict';
 //node requires
 const https = require('https');
+const http = require('http');
 let fs = require('fs');
 
 //initialize variables
@@ -280,25 +281,28 @@ function apiIssuesCall(repo, callNumber) {
 	        else {
 	            if(--dbTrigger == 0)
 	            {
+                    console.log(new Date().toLocaleString() + '\tended Issues query');
+                    console.log(new Date().toLocaleString() + '\tcalculating statistics');
+                    repos.forEach(function(repo){
+                        if(repo.issues){
+                            //calculate statistics if repo has issues
+                            var stats = statistics(repo.issues, AVG_DIST_STEPS);
+                            repo.stats = [];
+                            repo.stats = stats;
+                            delete repo.issues;
+                        }
+                        delete repo.totIssues;
+                    });
+                    console.log(new Date().toLocaleString() + '\tendend statistics');
+                    console.log(repos);
 	                /*ONLY FOR FINAL DEBUG*/
 	                /*THIS FILE IS READY TO BE WRITTEN IN A DB*/
-	                // fs.appendFile("reposFinale.json", JSON.stringify(repos), function(err) {
-	                //     if(err) {
-	                //         return console.log(err);
-	                //     }
-	                //
-	                // });
-	                console.log(new Date().toLocaleString() + '\tended Issues query');
-	                console.log(new Date().toLocaleString() + '\tcalculating statistics');
-	                repos.forEach(function(repo){
-	                    if(repo.Issues){
-	                        //calculate statistics if repo has issues
-	                        var stats = statistics(repo.issues, AVG_DIST_STEPS);
-	                        repo.stats = stats;
-	                        delete repo.issues;
-	                    }
-	                });
-	                console.log(new Date().toLocaleString() + '\tendend statistics');
+	                /* fs.appendFile("reposStats.json", JSON.stringify(repos), function(err) {
+	                     if(err) {
+	                         return console.log(err);
+	                     }
+	                
+	                 });*/
 	                console.log(new Date().toLocaleString() + '\tstarting db update');
 	                //call the repoApi service and write to mongo
 	                repos.forEach(function(repo){
@@ -319,16 +323,20 @@ function apiMongoCall(repo) {
         var query = JSON.stringify(repo);
 
         const options = {
-            hostname: 'http://localhost:3000/repos',
-            method: 'PUT',
+            hostname: 'http://localhost',
+            path: '/repos',
+            method: 'POST',
+            port: '3000',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'/*,
                 'Connection' : 'keep-alive',
-                'User-Agent' : 'My-Agent'
+                'User-Agent' : 'My-Agent'*/
             }
         };
 
-        const req = https.request(options, workOnIssueResponse);
+        const req = http.request(options, function(){
+            console.log("fatto");
+        });
 
         req.on('error', (e) => {
             console.error(e);
@@ -356,13 +364,15 @@ function statistics (arrayIssues, distributionSteps){
     var firstRespAverage = 0;
     var totalCommented = 0;
     var closeAverage = 0;
-    var evaluateLabels = Object();
+    var evaluateLabels = {};
 
     for (var i = 0; i < distNumber; i ++) {
         stats.firstRespDistributed.push(0);
         stats.closeDistributed.push(0);
     }
+
     stats.totalIssues = arrayIssues.length;
+    
     arrayIssues.forEach(function(issue){
         if(issue.firstResponseTime){
             firstRespAverage += issue.firstResponseTime;

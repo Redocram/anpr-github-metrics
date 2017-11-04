@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Redocram/anpr-github-metrics/#readme",
   "dependencies": {
     "express": "^4.16.2",
+    "mongoose": "^4.13.0",
     "mongose": "0.0.2-security"
   },
   "devDependencies": {

@@ -29,11 +29,11 @@ exports.read_a_repo = function(req, res){
 };
 
 exports.update_a_repo = function(req, res){
-	Repo.findOneAndUpdate({_id: req.params.repoId}, req.body, {new: true}, function(err, repo){
+	Repo.update({name: req.params.repoName}, req.body, { upsert : true }, function(err, repo){
 		if(err)
 			res.send(err);
 		res.json(repo);
-	});
+    });
 };
 
 exports.delete_a_repo = function(req, res){

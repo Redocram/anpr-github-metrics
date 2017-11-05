@@ -9,7 +9,7 @@
 
 		<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
 		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
+		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
 		crossorigin="anonymous">-->
 	</head>
 	<body>
@@ -132,8 +132,8 @@
 								</div>
 							</div>
 						</div>
-					</div>	
-				</div>			
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--js for bootstrap 4-->
@@ -142,11 +142,11 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/Chart.min.js"></script>
 		<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
-		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
-		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" 
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
 		crossorigin="anonymous"></script>-->
-		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" 
-		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" 
+		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
 		crossorigin="anonymous"></script>-->
 		<!--js for chart.js-->
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>-->
@@ -185,15 +185,15 @@
 
 		function sortLabels(labelsList){		//NON FUNZIONA
 		    var sortedLabels = new Array();
-		    
+
 		    for (var label in labelsList) {
 		        sortedLabels.push([label, labelsList[label]]);
 		    }
-		    
+
 		    sortedLabels.reverse(function(a, b) {
 		        return a[1] - b[1];
 		    });
-			
+
 			return sortedLabels;
 		}
 
@@ -205,7 +205,7 @@
 			   humanReadableSteps.push(humanizeHours(step));
 			});
 		    var ctx = document.getElementById("firstRespChart");
-		    
+
 		    var data = {
 		        datasets: [],
 		        labels: []
@@ -247,9 +247,9 @@
 		    var humanReadableSteps = new Array();	//human readable distribution steps
 			AVG_DIST_STEPS.forEach(function(step){
 				humanReadableSteps.push(humanizeHours(step));
-			});    
+			});
 		    var ctx = document.getElementById("closeChart");
-		    
+
 		    var data = {
 		        datasets: [],
 		        labels: []

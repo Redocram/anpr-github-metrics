@@ -1,157 +1,391 @@
 <!DOCTYPE html>
-	<html lang="IT">
-		<head>
-			<title>Dashboard github</title>
-			<meta charset="utf-8"/>
-			<link rel="stylesheet" href="css/bootstrap.min.css"/>
-			<link rel="stylesheet" href="css/open-iconic-bootstrap.css"/>
-			<link rel="stylesheet" href="css/style.css"/>
+<html lang="IT">
+	<head>
+		<title>Dashboard github</title>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/open-iconic-bootstrap.css"/>
+		<link rel="stylesheet" href="css/style.css"/>
 
-			<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
-			<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-			integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
-			crossorigin="anonymous">-->
-		</head>
-		<body>
+		<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
+		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
+		crossorigin="anonymous">-->
+	</head>
+	<body>
 
-			<!-- visible on ajax operation -->
-			<div id="loadingBack"></div>
-			<div id="loading">
-      			<!-- <i class="glyphicon glyphicon-refresh fast-right-spinner"></i> -->
-      			<i class="oi oi-loop-circular fast-right-spinner"></i>
-      			<span id="loadingText"> Loading...</span>
-      		</div>
+		<!-- visible on ajax operation -->
+		<div id="loadingBack"></div>
+		<div id="loading">
+  			<!-- <i class="glyphicon glyphicon-refresh fast-right-spinner"></i> -->
+  			<i class="oi oi-loop-circular fast-right-spinner"></i>
+  			<span id="loadingText"> Loading...</span>
+  		</div>
 
-			<header class="headboard">
-				<h1>Github dashboard issues</h1>
-				<nav class="myNavbar">
-					<ul class="nav justify-content-end">
-						<li class="nav-item">
-								<a class="nav-link active" href="#">back</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">repository</a>
-							<div class="dropdown-menu">
-								<div class="dropline">
-									<form class="col-lg-12 col-md-12 col-sm-12">
-   										<div class="form-group">
-      										<input type="search" class="form-control" id="exampleDropdownFormEmail1" 	placeholder="repository name">
-    									</div>
-    								<button type="submit" class="btn btn-primary"><img src="img/search.png"></button>
-  									</form>
-  								</div>
-							    <a class="dropdown-item" href="#">repository a</a>
-							    <a class="dropdown-item" href="#">repository a</a>
-							    
-							    <a class="dropdown-item" href="#">repository a</a>
-							</div>
-						</li>
-						<li class="nav-item">
-								<a class="nav-link" href="#">logout</a>
-						</li>
-					</ul>
-				</nav>
-			</header>
-			<div class="container-fluid">
-				<div class="row">
-					<!--<div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block sidebar myNavbar">
-						<nav>
-							<ul class="nav flex-column">
-								<li class="nav-item">
-									 <a class="nav-link active" href="#">back to repository</a>
-								</li>
-								<li class="nav-item">
-									 <a class="nav-link" href="#">view other tickets</a>
-								</li>
-								<li class="nav-item">
-									 <a class="nav-link" href="#">go to principal issue</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="#">search</a>
-								</li>
-							</ul>
-						</nav>
-					</div>	-->
-					<div class="total">
-						<div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash">
-							<div class="titleRepository">
-								<h2 id="name">ANPR </h2>
-								<span class="badge badge-pill badge-primary">123</span>
-							</div>
-							<div class="col-lg-8 col-md-12 col-sm-12 eqMargin">
-								<div class="block">
-									<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
-										<p class="midCall" id="avgFirstTime"></p>
-										<h6>tempo medio prima risposta</h6>
+		<header class="headboard">
+			<h1>Github dashboard issues</h1>
+			<nav class="myNavbar">
+				<ul class="nav justify-content-end">
+					<!--li class="nav-item">
+							<a class="nav-link active" href="#">back</a>
+					</li-->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Repositories</a>
+						<div class="dropdown-menu">
+							<div class="dropline">
+								<form class="col-lg-12 col-md-12 col-sm-12">
+										<div class="form-group">
+  										<input type="search" class="form-control" id="exampleDropdownFormEmail1" placeholder="repository name">
+	    								<button type="button" class="btn btn-primary"><!--img src="img/search.png"--><span class="oi oi-magnifying-glass"></span></button>
 									</div>
-									<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
-										<canvas id="firstRespChart"></canvas>
-									</div>
+									</form>
 								</div>
-								<div class="block">
-									<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
-										<p class="midCall" id="avgCloseTime"></p>
-										<h6>tempo medio chiusura ticket</h6>
-									</div>
-									<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
-										<canvas id="closeChart"></canvas>
-									</div>
+								{{#repoList}}
+						    	<span class="dropdown-item repos" name="{{name}}" id="{{_id}}">{{name}}</span>
+							{{/repoList}}
+						</div>
+					</li>
+					<!--li class="nav-item">
+							<a class="nav-link" href="#">logout</a>
+					</li-->
+				</ul>
+			</nav>
+		</header>
+		<div class="container-fluid">
+			<div class="row">
+				<!--<div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block sidebar myNavbar">
+					<nav>
+						<ul class="nav flex-column">
+							<li class="nav-item">
+								 <a class="nav-link active" href="#">back to repository</a>
+							</li>
+							<li class="nav-item">
+								 <a class="nav-link" href="#">view other tickets</a>
+							</li>
+							<li class="nav-item">
+								 <a class="nav-link" href="#">go to principal issue</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">search</a>
+							</li>
+						</ul>
+					</nav>
+				</div>	-->
+				<div class="total">
+					<div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash">
+						<div class="titleRepository">
+							<h2 id="name"><a href="{{repoList.0.url}}">{{repoList.0.name}}</a> </h2>
+							<span class="badge badge-pill badge-primary">123</span>
+						</div>
+						<div class="col-lg-8 col-md-12 col-sm-12 eqMargin">
+							<div class="block">
+								<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
+									<p class="midCall" id="avgFirstTime"></p>
+									<h6>tempo medio prima risposta</h6>
 								</div>
-								<div class="block ">
-									<div class="col-lg-6 col-md-6 col-sm-12 imgGraph eqMargin">
-										<canvas id="evaluateLabelsChart"></canvas>
-									</div>
-									<div class="col-lg-6 col-md-6 col-sm-12 imgGraph">
-										<canvas id="myDoughnutChart"></canvas>percentuale issue no comment
-									</div>
+								<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
+									<canvas id="firstRespChart"></canvas>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-12 col-sm-12 floatLine eqMargin">
-								<div class="block">
-									<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
-										<p id="tOpen"></p>
-										<h6>ticket aperti</h6>
-									</div>
-									<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
-										<p id="tClosed"></p>
-										<h6>ticket chiusi</h6>
-									</div>
+							<div class="block">
+								<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
+									<p class="midCall" id="avgCloseTime"></p>
+									<h6>tempo medio chiusura ticket</h6>
 								</div>
-								<div class="block">
-									<div class="col-lg-12 col-md-12 col-sm-12 imgGraph eqMargin">
-										<canvas id="avgRespCloseChart"></canvas>
-									</div>
-								</div>
-								<div class="block">
-									<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
-										<p id="closedNoComments"></p>
-										<h6>issue chiuse senza commento</h6>
-									</div>
-									<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
-										<p id="openNoLabel"></p>
-										<h6>issue aperte senza label</h6>
-									</div>
+								<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
+									<canvas id="closeChart"></canvas>
 								</div>
 							</div>
-						</div>	
-					</div>			
-				</div>
+							<div class="block ">
+								<div class="col-lg-6 col-md-6 col-sm-12 imgGraph eqMargin">
+									<canvas id="evaluateLabelsChart"></canvas>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 imgGraph">
+									<canvas id="myDoughnutChart"></canvas>percentuale issue no comment
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-12 col-sm-12 floatLine eqMargin">
+							<div class="block">
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
+									<p id="tOpen"></p>
+									<h6>ticket aperti</h6>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
+									<p id="tClosed"></p>
+									<h6>ticket chiusi</h6>
+								</div>
+							</div>
+							<div class="block">
+								<div class="col-lg-12 col-md-12 col-sm-12 imgGraph eqMargin">
+									<canvas id="avgRespCloseChart"></canvas>
+								</div>
+							</div>
+							<div class="block">
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
+									<p id="closedNoComments"></p>
+									<h6>issue chiuse senza commento</h6>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
+									<p id="openNoLabel"></p>
+									<h6>issue aperte senza label</h6>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div>			
 			</div>
-			<!--js for bootstrap 4-->
-			<script src="js/jquery-3.2.1.min.js"></script>
-			<script src="js/popper.min.js"></script>
-			<script src="js/bootstrap.min.js"></script>
-			<script src="js/Chart.min.js"></script>
-			<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
-    		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
-			integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" 
-			crossorigin="anonymous"></script>-->
-			<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" 
-			integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" 
-			crossorigin="anonymous"></script>-->
-			<!--js for chart.js-->
-			<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>-->
-			<!--personal js-->
-			<!--script src="js/dashboard.js"></script-->
-		</body>
-	</html>
+		</div>
+		<!--js for bootstrap 4-->
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/Chart.min.js"></script>
+		<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
+		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" 
+		crossorigin="anonymous"></script>-->
+		<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" 
+		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" 
+		crossorigin="anonymous"></script>-->
+		<!--js for chart.js-->
+		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>-->
+		<!--personal js-->
+		<!--script src="js/dashboard.js"></script-->
+	</body>
+	<script>
+		const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
+		//const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
+		const MAX_LABELS = 6;
+
+		function humanizeHours(hours){
+			var humanized;
+			if(typeof hours == "string")
+				humanized = hours;
+			else if(hours < 24)
+				humanized = hours + "hr";
+			else if(hours < 168)
+				humanized = (hours / 24) + "d";
+			else
+				humanized = (hours / 168) + "w";
+
+			return humanized;
+		}
+
+		function avgToString(avg){
+		    var parsedAvg = avg.Years != 0 ? avg.Years + "Y : " : "";
+		    parsedAvg += avg.Months + "M : ";
+		    parsedAvg += avg.Days + "D<br/>";
+		    parsedAvg += avg.Hours + "h : ";
+		    parsedAvg += avg.Minutes + "m : ";
+		    parsedAvg += avg.Hours + "s";
+
+		    return parsedAvg;
+		}
+
+		function sortLabels(labelsList){		//NON FUNZIONA
+		    var sortedLabels = new Array();
+		    
+		    for (var label in labelsList) {
+		        sortedLabels.push([label, labelsList[label]]);
+		    }
+		    
+		    sortedLabels.reverse(function(a, b) {
+		        return a[1] - b[1];
+		    });
+			
+			return sortedLabels;
+		}
+
+		// --------------------------------- graphs section ---------------------------------------------//
+		//first response times distributed
+		function firstRespChart(stats, distributionSteps){
+			var humanReadableSteps = new Array();	//human readable distribution steps
+			AVG_DIST_STEPS.forEach(function(step){
+			   humanReadableSteps.push(humanizeHours(step));
+			});
+		    var ctx = document.getElementById("firstRespChart");
+		    
+		    var data = {
+		        datasets: [],
+		        labels: []
+		    };
+
+		    //data.labels = distributionSteps;
+		    for (var i = 0; i < distributionSteps.length; i ++) {
+		        coord = new Object();
+		        coord.x = distributionSteps[i];
+		        coord.y = stats.firstRespDistributed[i];
+		        data.datasets.push(coord);
+
+		    }
+
+		    var myChart = new Chart(ctx, {
+		        type: 'line',
+		        data: {
+		            labels: humanReadableSteps,
+		            datasets: [{
+		                label: "Distribuzione tempi prima risposta",
+		                data: data.datasets,
+		                borderColor: ['rgba(165,223,223, 1)'],
+		                pointBorderColor: ['rgba(75,192,192, 1)'],
+		                fill: "false"
+		            }]
+		        },
+		        options: {
+		            responsive: true,
+		            maintainAspectRatio: true,
+		            layout: {
+		                padding: 10
+		            }
+		        }
+		    });
+		}
+
+		//close times distributed
+		function closeChart(stats, distributionSteps){
+		    var humanReadableSteps = new Array();	//human readable distribution steps
+			AVG_DIST_STEPS.forEach(function(step){
+				humanReadableSteps.push(humanizeHours(step));
+			});    
+		    var ctx = document.getElementById("closeChart");
+		    
+		    var data = {
+		        datasets: [],
+		        labels: []
+		    };
+
+		    //data.labels = distributionSteps;
+		    for (var i = 0; i < distributionSteps.length; i ++) {
+		        coord = new Object();
+		        coord.x = distributionSteps[i];
+		        coord.y = stats.closeDistributed[i];
+		        data.datasets.push(coord);
+		    }
+
+		    var myChart = new Chart(ctx, {
+		        type: 'line',
+		        data: {
+		            labels: humanReadableSteps,
+		            datasets: [{
+		                label: "Distribuzione tempi chiusura Issue",
+		                data: data.datasets,
+		                borderColor: ['#ff6384'],
+		                pointBorderColor: ['#36a2eb'],
+		                fill: "false"
+		            }]
+		        },
+		        options: {
+		            responsive: true,
+		            maintainAspectRatio: true,
+		            layout: {
+		                padding: 10
+		            }
+		        }
+		    });
+		}
+
+		//average close/time distributed
+		function avgRespCloseChart(stats, distributionSteps){
+		    var ctx = document.getElementById("avgRespCloseChart").getContext('2d');
+
+		    var data = {
+		        labels: distributionSteps,
+		        datasets: [
+		            {
+		                label: "Tempo prima risposta",
+		                backgroundColor: '#36a2eb',
+		                borderColor: '#36a2eb',
+		                data: stats.firstRespDistributed
+		            },
+		            {
+		                label: "Tempo chiusura Ticket",
+		                backgroundColor: '#ff6384)',
+		                borderColor: '#36a2eb',
+		                data: stats.closeDistributed
+		            }
+		        ]
+		    };
+
+		    var myChart = new Chart(ctx, {
+		        type: 'bar',
+		        data: data,
+		        options: {
+		            responsive: true,
+		            maintainAspectRatio: true,
+		            scales: {
+		                yAxes: [{
+		                    ticks: {
+		                        beginAtZero:true
+		                    }
+		                }]
+		            }
+		        }
+		    });
+		}
+
+		//label presence
+		function evaluateLabelsChart(stats, maxLabels){
+		    var ctx = document.getElementById("evaluateLabelsChart");
+
+		    data = {
+		        datasets: [{
+		 				data: [],
+		 				backgroundColor: []
+		 			 },
+		        ],
+		        labels: []
+		    };
+
+		    countFirstLabels = maxLabels;
+		    data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384'];
+		    stats.forEach(function(label){
+		        if(countFirstLabels>0){
+		            data.labels.push(label[0]);
+		            data.datasets[0].data.push(label[1]);
+		            countFirstLabels--;
+		        }
+		        else{
+		            data.labels[data.labels.length-1] = "Altre label";
+		            data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
+		        }
+		    });
+
+		    var myChart = new Chart(ctx, {
+		        type: 'pie',
+		        data: data,
+		        options: {
+		            responsive: true,
+		            maintainAspectRatio: false,
+		            layout: {
+		                padding: 10
+		            },
+		            legend: {
+		            	position: "left"
+		            },
+		            title: {
+		            display: true,
+		            text: 'Label più utilizzate'
+		        }
+		        }
+		    });
+		}
+
+		// --------------------------------- font-end filling blocks section ----------------------------------//
+		$('document').ready(function fillHTML(){
+		    //graphs
+		    firstRespChart(repo.stats, AVG_DIST_STEPS);
+		    closeChart(repo.stats, AVG_DIST_STEPS)
+		    evaluateLabelsChart(repo.stats.evaluateLabels, MAX_LABELS);
+		    //other panels
+		    $("#name").html(ownerName + "/" + repoName);
+		    $("#nTicket").html(repo.stats.nClosedIssues + repo.stats.nOpenIssues);
+		    $('#avgFirstTime').html(avgToString(repo.stats.firstRespAverage));
+		    $('#avgCloseTime').html(avgToString(repo.stats.closeAverage));
+		    $('#tOpen').html(repo.stats.nOpenIssues);
+		    $('#tClosed').html(repo.stats.nClosedIssues);
+		    $("#closedNoComments").html(repo.stats.nClosedIssuesNoComments);
+		    $("#openNoLabel").html(repo.stats.nOpenIssuesNoLabel);
+		});
+	</script>
+</html>

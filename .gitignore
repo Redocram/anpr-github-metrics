@@ -70,3 +70,6 @@ dashboard_hack/githubApi/config.json
 *.iml
 out
 gen
+
+#token and configs
+dashboard_hack/githubApi/config.json

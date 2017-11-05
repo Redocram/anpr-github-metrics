@@ -216,7 +216,7 @@ function evaluateLabelsChart(stats, maxLabels){
 }
 
 // --------------------------------- font-end filling blocks section ----------------------------------//
-function fillHTML(){
+$('document').ready(function fillHTML(){
     //graphs
     firstRespChart(repo.stats, AVG_DIST_STEPS);
     closeChart(repo.stats, AVG_DIST_STEPS)
@@ -230,4 +230,4 @@ function fillHTML(){
     $('#tClosed').html(repo.stats.nClosedIssues);
     $("#closedNoComments").html(repo.stats.nClosedIssuesNoComments);
     $("#openNoLabel").html(repo.stats.nOpenIssuesNoLabel);
-}
+});

@@ -1,13 +1,30 @@
 'use strict';
 
 const http = require('http');
-const handlebars = require('handlebars');
+var handlebars = require('handlebars');
+var fs = require('fs');
 const port = 8080;
+var outputHtml = '';
 
 const requestHandler = (request, response) => {
-  console.log(request.url);
-  repoListCall();
-  //response.end('Hello Node.js Server!');
+	//console.log(request);
+	response.writeHead(200, {'Content-Type': 'text/html'});
+	repoListCall();
+	response.end(outputHtml);
+
+	/*fs.readFile('/js/dashboard.js', function (err, data) {
+		if (err) console.log(err);
+		response.writeHead(200, {'Content-Type': 'text/javascript'});
+		response.write(data);
+		response.end();
+	});*/
+
+	/*fs.readFile('css/style.css', function (err, data) {
+		if (err) console.log(err);
+		response.writeHead(200, {'Content-Type': 'text/css'});
+		response.write(data);
+		response.end();
+	});*/
 }
 
 const server = http.createServer(requestHandler);
@@ -27,9 +44,7 @@ function repoListCall(){
         path: '/repos',
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'/*,
-            'Connection' : 'keep-alive',
-            'User-Agent' : 'My-Agent'*/
+            'Content-Type': 'application/json'
         }
     };
 
@@ -38,28 +53,33 @@ function repoListCall(){
     req.on('error', (e) => {
         console.error(e);
     });
-    //req.write();
 
     req.end();
 
     function workOnDbResponse(res) {
         let body = '';
-        let repoList;
+        let repoList = null;
         res.on('data', function (resData) {
             body += resData;
         });
         res.on('end', function () {
             repoList = JSON.parse(body);
             body = '';
-
            	//load and render template
-            try {
-    			var source = require('./index.html');
-				var template = Handlebars.compile(source);
-				var result = template(repoList);
-			} catch (ex) {
-    			console.log(ex);
-			}
+            fs.readFile('./index.hbs', 'utf-8', function(error, data){
+            	if (!error) {
+            		var source = data.toString();
+            		renderSource(source, repoList);
+				}
+				else{
+					console.log(error);
+				}
+			});
         });
     }
+
+    function renderSource(source, data) {
+	  var template = handlebars.compile(source);
+	  outputHtml = template(data);
+	}
 }

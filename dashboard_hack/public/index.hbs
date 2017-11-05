@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="IT">
+	<head>
+		<title>Dashboard github</title>
+		<meta charset="utf-8"/>
+
+		<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
+		crossorigin="anonymous">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
+		<!--link rel="stylesheet" href="css/style.css"/-->
+	</head>
+	<body>
+		<h1>{{ciao}}</h1>
+		<!-- visible on ajax operation -->
+		<div id="loadingBack"></div>
+		<div id="loading">
+  			<i class="oi oi-loop-circular fast-right-spinner"></i>
+  			<span id="loadingText"> Loading...</span>
+  		</div>
+
+		<header class="headboard">
+			<h1>Github dashboard issues</h1>
+			<nav class="myNavbar">
+				<ul class="nav justify-content-end">
+					<!--li class="nav-item">
+							<a class="nav-link active" href="#">back</a>
+					</li-->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Repositories</a>
+						<div class="dropdown-menu">
+							<div class="dropline">
+								<form class="col-lg-12 col-md-12 col-sm-12">
+										<div class="form-group">
+  										<input type="search" class="form-control" id="exampleDropdownFormEmail1" placeholder="repository name">
+	    								<button type="button" class="btn btn-primary"><!--img src="img/search.png"--><span class="oi oi-magnifying-glass"></span></button>
+									</div>
+									</form>
+								</div>
+								{{#repoList}}
+						    		<span class="dropdown-item repos" id="{{_id}}">{{name}}</span>
+								{{/repoList}}
+						</div>
+					</li>
+					<!--li class="nav-item">
+							<a class="nav-link" href="#">logout</a>
+					</li-->
+				</ul>
+			</nav>
+		</header>
+		<div class="container-fluid">
+			<div class="row">
+				<!--<div class="col-lg-2 col-md-2 col-sm-2 d-none d-sm-block sidebar myNavbar">
+					<nav>
+						<ul class="nav flex-column">
+							<li class="nav-item">
+								 <a class="nav-link active" href="#">back to repository</a>
+							</li>
+							<li class="nav-item">
+								 <a class="nav-link" href="#">view other tickets</a>
+							</li>
+							<li class="nav-item">
+								 <a class="nav-link" href="#">go to principal issue</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">search</a>
+							</li>
+						</ul>
+					</nav>
+				</div>	-->
+				<div class="total">
+					<div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash">
+						<div class="titleRepository">
+							<h2 id="name"><a href="{{repoList.0.url}}">{{repoList.0.name}}</a> </h2>
+							<span class="badge badge-pill badge-primary">123</span>
+						</div>
+						<div class="col-lg-8 col-md-12 col-sm-12 eqMargin">
+							<div class="block">
+								<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
+									<p class="midCall" id="avgFirstTime"></p>
+									<h6>tempo medio prima risposta</h6>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
+									<canvas id="firstRespChart"></canvas>
+								</div>
+							</div>
+							<div class="block">
+								<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
+									<p class="midCall" id="avgCloseTime"></p>
+									<h6>tempo medio chiusura ticket</h6>
+								</div>
+								<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
+									<canvas id="closeChart"></canvas>
+								</div>
+							</div>
+							<div class="block ">
+								<div class="col-lg-6 col-md-6 col-sm-12 imgGraph eqMargin">
+									<canvas id="evaluateLabelsChart"></canvas>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 imgGraph">
+									<canvas id="myDoughnutChart"></canvas>percentuale issue no comment
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-12 col-sm-12 floatLine eqMargin">
+							<div class="block">
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
+									<p id="tOpen"></p>
+									<h6>ticket aperti</h6>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
+									<p id="tClosed"></p>
+									<h6>ticket chiusi</h6>
+								</div>
+							</div>
+							<div class="block">
+								<div class="col-lg-12 col-md-12 col-sm-12 imgGraph eqMargin">
+									<canvas id="avgRespCloseChart"></canvas>
+								</div>
+							</div>
+							<div class="block">
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
+									<p id="closedNoComments"></p>
+									<h6>issue chiuse senza commento</h6>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
+									<p id="openNoLabel"></p>
+									<h6>issue aperte senza label</h6>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div>			
+			</div>
+		</div>
+		<!--js for bootstrap 4-->
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
+		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" 
+		crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" 
+		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" 
+		crossorigin="anonymous"></script>
+		<!--js for chart.js-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<!--personal js-->
+		<!--script src="js/dashboard.js"></script-->
+	</body>
+</html>

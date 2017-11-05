@@ -7,24 +7,33 @@ const port = 8080;
 var outputHtml = '';
 
 const requestHandler = (request, response) => {
-	//console.log(request);
-	response.writeHead(200, {'Content-Type': 'text/html'});
-	repoListCall();
-	response.end(outputHtml);
-
-	/*fs.readFile('/js/dashboard.js', function (err, data) {
-		if (err) console.log(err);
-		response.writeHead(200, {'Content-Type': 'text/javascript'});
-		response.write(data);
+	//console.log(request.url);
+	if(request.url == '/'){
+		response.writeHead(200, {'Content-Type': 'text/html'});
+		repoListCall();
+		response.write(outputHtml);
 		response.end();
-	});*/
-
-	/*fs.readFile('css/style.css', function (err, data) {
-		if (err) console.log(err);
-		response.writeHead(200, {'Content-Type': 'text/css'});
-		response.write(data);
-		response.end();
-	});*/
+	}
+	else if(request.url == "/css/style.css"){
+		fs.readFile('public/css/style.css', function(err, page) { 
+			response.writeHead(200, {'Content-Type': 'text/css'});
+			response.write(page); 
+			response.end();
+		});
+	}
+	else if(request.url == "/js/dashboard.js"){
+		fs.readFile('public/js/dashboard.js', function(err, page) { 
+			response.writeHead(200, {'Content-Type': 'text/js'});
+			response.write(page); 
+			response.end();
+		});
+	}
+	else {
+            response.writeHead(301,
+              {Location: '/'}
+            );
+            response.end();
+        }
 }
 
 const server = http.createServer(requestHandler);
@@ -58,18 +67,20 @@ function repoListCall(){
 
     function workOnDbResponse(res) {
         let body = '';
-        let repoList = null;
+        let dbResponse; /*= {
+        	reposList: []
+        };*/
         res.on('data', function (resData) {
             body += resData;
         });
         res.on('end', function () {
-            repoList = JSON.parse(body);
+            dbResponse/*.reposList*/ = JSON.parse(body);
             body = '';
            	//load and render template
-            fs.readFile('./index.hbs', 'utf-8', function(error, data){
+            fs.readFile('public/index.hbs', 'utf-8', function(error, data){
             	if (!error) {
             		var source = data.toString();
-            		renderSource(source, repoList);
+            		renderSource(source, {reposList: /*encodeURIComponent(JSON.stringify(*/dbResponse/*))*/});
 				}
 				else{
 					console.log(error);
@@ -81,5 +92,6 @@ function repoListCall(){
     function renderSource(source, data) {
 	  var template = handlebars.compile(source);
 	  outputHtml = template(data);
+	  //console.log(outputHtml);
 	}
 }

@@ -3,16 +3,21 @@
 	<head>
 		<title>Dashboard github</title>
 		<meta charset="utf-8"/>
+		<link rel="icon" href="./favicon.ico" />
 
 		<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
 		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
 		crossorigin="anonymous">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
-		<!--link rel="stylesheet" href="css/style.css"/-->
+		<link rel="stylesheet" href="./css/style.css">
+
+		<script>
+			//repos = JSON.parse(decodeURIComponent("{{{reposList}}}"));
+			repos = "{{{reposList}}}";
+		</script>
 	</head>
 	<body>
-		<h1>{{ciao}}</h1>
 		<!-- visible on ajax operation -->
 		<div id="loadingBack"></div>
 		<div id="loading">
@@ -29,7 +34,7 @@
 					</li-->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Repositories</a>
-						<div class="dropdown-menu">
+						<div class="dropdown-menu" id="reposList">
 							<div class="dropline">
 								<form class="col-lg-12 col-md-12 col-sm-12">
 										<div class="form-group">
@@ -38,9 +43,9 @@
 									</div>
 									</form>
 								</div>
-								{{#repoList}}
+								{{#reposList}}
 						    		<span class="dropdown-item repos" id="{{_id}}">{{name}}</span>
-								{{/repoList}}
+								{{/reposList}}
 						</div>
 					</li>
 					<!--li class="nav-item">
@@ -72,8 +77,8 @@
 				<div class="total">
 					<div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash">
 						<div class="titleRepository">
-							<h2 id="name"><a href="{{repoList.0.url}}">{{repoList.0.name}}</a> </h2>
-							<span class="badge badge-pill badge-primary">123</span>
+							<h3 id="name"><span class="oi oi-fork"></span><a href="{{repos.0.url}}">{{reposList.0.name}}</a> </h3>
+							<span class="badge badge-pill badge-primary">{{reposList.0.totIssues}}</span>
 						</div>
 						<div class="col-lg-8 col-md-12 col-sm-12 eqMargin">
 							<div class="block">
@@ -145,6 +150,6 @@
 		<!--js for chart.js-->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 		<!--personal js-->
-		<!--script src="js/dashboard.js"></script-->
+		<script src="./js/dashboard.js"></script>
 	</body>
 </html>

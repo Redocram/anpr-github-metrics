@@ -2,6 +2,7 @@ const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 6;
 
+// --------------- utilities and formatting functions --------------------//
 function humanizeHours(hours){
 	var humanized;
 	if(typeof hours == "string")
@@ -218,16 +219,20 @@ function evaluateLabelsChart(stats, maxLabels){
 // --------------------------------- font-end filling blocks section ----------------------------------//
 $('document').ready(function fillHTML(){
     //graphs
-    firstRespChart(repo.stats, AVG_DIST_STEPS);
-    closeChart(repo.stats, AVG_DIST_STEPS)
-    evaluateLabelsChart(repo.stats.evaluateLabels, MAX_LABELS);
+    firstRespChart(repos[0].stats, AVG_DIST_STEPS);
+    closeChart(repos[0].stats, AVG_DIST_STEPS)
+    evaluateLabelsChart(repos[0].stats.evaluateLabels, MAX_LABELS);
     //other panels
-    $("#name").html(ownerName + "/" + repoName);
-    $("#nTicket").html(repo.stats.nClosedIssues + repo.stats.nOpenIssues);
-    $('#avgFirstTime').html(avgToString(repo.stats.firstRespAverage));
-    $('#avgCloseTime').html(avgToString(repo.stats.closeAverage));
-    $('#tOpen').html(repo.stats.nOpenIssues);
-    $('#tClosed').html(repo.stats.nClosedIssues);
-    $("#closedNoComments").html(repo.stats.nClosedIssuesNoComments);
-    $("#openNoLabel").html(repo.stats.nOpenIssuesNoLabel);
+    $("#name").html(ownerName + "/" + repos[0].name);
+    $("#nTicket").html(repos[0].stats.nClosedIssues + repos[0].stats.nOpenIssues);
+    $('#avgFirstTime').html(avgToString(repos[0].stats.firstRespAverage));
+    $('#avgCloseTime').html(avgToString(repos[0].stats.closeAverage));
+    $('#tOpen').html(repos[0].stats.nOpenIssues);
+    $('#tClosed').html(repos[0].stats.nClosedIssues);
+    $("#closedNoComments").html(repos[0].stats.nClosedIssuesNoComments);
+    $("#openNoLabel").html(repos[0].stats.nOpenIssuesNoLabel);
+});
+
+$(".repos").change(function(){
+
 });

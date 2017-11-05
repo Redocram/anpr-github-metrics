@@ -228,9 +228,9 @@ module.exports.github = githubApi
 
             function fillRepoIssues() {
 
-                if (typeof repo.issues == 'undefined') {
+                //if (typeof repo.issues == 'undefined') {
                     repo.issues = [];
-                }
+                //}
                 gitHubResponse.data.repository.issues.edges.forEach(function (issue) {
                     var currentIssue = parseIssue(issue);
                     repo.issues.push(currentIssue);
@@ -287,14 +287,14 @@ module.exports.github = githubApi
                         console.log(new Date().toLocaleString() + '\tended Issues query');
                         console.log(new Date().toLocaleString() + '\tcalculating statistics');
                         repos.forEach(function (repo) {
-                            if (repo.issues) {
+                            //if (repo.issues) {
                                 //calculate statistics if repo has issues
                                 var stats = statistics(repo.issues, AVG_DIST_STEPS);
                                 repo.stats = [];
                                 repo.stats = stats;
                                 delete repo.issues;
-                            }
-                            delete repo.totIssues;
+                            //}
+                            //delete repo.totIssues;
                         });
                         console.log(new Date().toLocaleString() + '\tendend statistics');
 
@@ -380,76 +380,77 @@ module.exports.github = githubApi
             nOpenIssues: 0
         };
 
-        var firstRespAverage = 0;
-        var totalCommented = 0;
-        var closeAverage = 0;
-        var evaluateLabels = {};
+        if(arrayIssues){
+            var firstRespAverage = 0;
+            var totalCommented = 0;
+            var closeAverage = 0;
+            var evaluateLabels = {};
 
-        for (var i = 0; i < distNumber; i++) {
-            stats.firstRespDistributed.push(0);
-            stats.closeDistributed.push(0);
-        }
-
-        stats.totalIssues = arrayIssues.length;
-
-        arrayIssues.forEach(function (issue) {
-            if (issue.firstResponseTime) {
-                firstRespAverage += issue.firstResponseTime;
-                totalCommented++;
+            for (var i = 0; i < distNumber; i++) {
+                stats.firstRespDistributed.push(0);
+                stats.closeDistributed.push(0);
             }
 
-            if (issue.closeTime) {
-                closeAverage += issue.closeTime;
-                stats.nClosedIssues++;
-                if (issue.totalComments == 0)
-                    stats.nClosedIssuesNoComments++;
-            }
-            else {
-                stats.nOpenIssues++;
-                if (issue.labels.length == 0)
-                    stats.nOpenIssuesNoLabel++;
-            }
+            stats.totalIssues = arrayIssues.length;
 
-            if (issue.labels.length > 0) {
-                issue.labels.forEach(function (label) {
-                    if (!evaluateLabels[label]) {
-                        evaluateLabels[label] = 0;
+            arrayIssues.forEach(function (issue) {
+                if (issue.firstResponseTime) {
+                    firstRespAverage += issue.firstResponseTime;
+                    totalCommented++;
+                }
+
+                if (issue.closeTime) {
+                    closeAverage += issue.closeTime;
+                    stats.nClosedIssues++;
+                    if (issue.totalComments == 0)
+                        stats.nClosedIssuesNoComments++;
+                }
+                else {
+                    stats.nOpenIssues++;
+                    if (issue.labels.length == 0)
+                        stats.nOpenIssuesNoLabel++;
+                }
+
+                if (issue.labels.length > 0) {
+                    issue.labels.forEach(function (label) {
+                        if (!evaluateLabels[label]) {
+                            evaluateLabels[label] = 0;
+                        }
+                        evaluateLabels[label]++;
+                    });
+                }
+
+                var curFirstResp = issue.firstResponseTime;
+                var curCloseTime = issue.closeTime;
+                var oreResp = curFirstResp / 3600000;
+                var oreClose = curCloseTime / 3600000;
+                var esc = 0;
+                for (var i = 0; i < distNumber - 1; i++) {
+                    if (oreResp < distributionSteps[i]) {
+                        stats.firstRespDistributed[i]++;
+                        curFirstResp = null;
+                        esc = 1;
                     }
-                    evaluateLabels[label]++;
-                });
-            }
-
-            var curFirstResp = issue.firstResponseTime;
-            var curCloseTime = issue.closeTime;
-            var oreResp = curFirstResp / 3600000;
-            var oreClose = curCloseTime / 3600000;
-            var esc = 0;
-            for (var i = 0; i < distNumber - 1; i++) {
-                if (oreResp < distributionSteps[i]) {
-                    stats.firstRespDistributed[i]++;
-                    curFirstResp = null;
-                    esc = 1;
+                    if (oreClose < distributionSteps[i]) {
+                        stats.closeDistributed[i]++;
+                        curCloseTime = null;
+                        esc = 1;
+                    }
+                    if (esc == 1)
+                        break;
                 }
-                if (oreClose < distributionSteps[i]) {
-                    stats.closeDistributed[i]++;
-                    curCloseTime = null;
-                    esc = 1;
+                if (curFirstResp) {
+                    stats.firstRespDistributed[distNumber - 1]++;
                 }
-                if (esc == 1)
-                    break;
-            }
-            if (curFirstResp) {
-                stats.firstRespDistributed[distNumber - 1]++;
-            }
-            if (curCloseTime) {
-                stats.closeDistributed[distNumber - 1]++;
-            }
-        });
+                if (curCloseTime) {
+                    stats.closeDistributed[distNumber - 1]++;
+                }
+            });
 
-        stats.firstRespAverage = convertMilliseconds(Math.floor(firstRespAverage / totalCommented));
-        stats.closeAverage = convertMilliseconds(Math.floor(closeAverage / stats.nClosedIssues));
-        stats.evaluateLabels = evaluateLabels;
-
+            stats.firstRespAverage = convertMilliseconds(Math.floor(firstRespAverage / totalCommented));
+            stats.closeAverage = convertMilliseconds(Math.floor(closeAverage / stats.nClosedIssues));
+            stats.evaluateLabels = evaluateLabels;
+        }
         return stats;
     }
 

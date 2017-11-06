@@ -217,22 +217,41 @@ function evaluateLabelsChart(stats, maxLabels){
 }
 
 // --------------------------------- font-end filling blocks section ----------------------------------//
-$('document').ready(function fillHTML(){
+function fillHTML(selectedRepo){    
     //graphs
-    firstRespChart(repos[0].stats, AVG_DIST_STEPS);
-    closeChart(repos[0].stats, AVG_DIST_STEPS)
-    evaluateLabelsChart(repos[0].stats.evaluateLabels, MAX_LABELS);
+    firstRespChart(selectedRepo.stats, AVG_DIST_STEPS);
+    closeChart(selectedRepo.stats, AVG_DIST_STEPS)
+    evaluateLabelsChart(selectedRepo.stats.evaluateLabels, MAX_LABELS);
     //other panels
-    $("#name").html(ownerName + "/" + repos[0].name);
-    $("#nTicket").html(repos[0].stats.nClosedIssues + repos[0].stats.nOpenIssues);
-    $('#avgFirstTime').html(avgToString(repos[0].stats.firstRespAverage));
-    $('#avgCloseTime').html(avgToString(repos[0].stats.closeAverage));
-    $('#tOpen').html(repos[0].stats.nOpenIssues);
-    $('#tClosed').html(repos[0].stats.nClosedIssues);
-    $("#closedNoComments").html(repos[0].stats.nClosedIssuesNoComments);
-    $("#openNoLabel").html(repos[0].stats.nOpenIssuesNoLabel);
+    $("#name").html(/*ownerName + "/" + */selectedRepo.name);
+    $("#nTicket").html(selectedRepo.stats.nClosedIssues + selectedRepo.stats.nOpenIssues);
+    $('#avgFirstTime').html(avgToString(selectedRepo.stats.firstRespAverage));
+    $('#avgCloseTime').html(avgToString(selectedRepo.stats.closeAverage));
+    $('#tOpen').html(selectedRepo.stats.nOpenIssues);
+    $('#tClosed').html(selectedRepo.stats.nClosedIssues);
+    $("#closedNoComments").html(selectedRepo.stats.nClosedIssuesNoComments);
+    $("#openNoLabel").html(selectedRepo.stats.nOpenIssuesNoLabel);
+}
+
+function fillDropdown(){
+    repos.forEach(function(repo){
+        $("#list").append("<span class='dropdown-item repos'>" + repo.name + "</span>");
+    });
+}
+
+$('document').ready(function(){
+    fillDropdown();
+    fillHTML(repos[0]);
 });
 
-$(".repos").change(function(){
+$("#repos").change(function(){
+    //find repo in array
+    var selectedName = this.text();
+    var selectedRepo = repos.find(function(element){
+        return element.name == selectedName;
+    }, selectedName);
+    console.log(selectedRepo);
 
+    //clean page
+    fillHTML(selectedRepo);//refill page
 });

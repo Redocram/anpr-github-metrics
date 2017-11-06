@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+		<script>
+			repos = JSON.parse(decodeURIComponent("{{{reposList}}}"));
+			//var repos = "{reposList}";
+		</script>
 <html lang="IT">
 	<head>
 		<title>Dashboard github</title>
@@ -7,17 +11,13 @@
 
 		<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
-		crossorigin="anonymous">
+		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
 		<link rel="stylesheet" href="./css/style.css">
-
-		<script>
-			//repos = JSON.parse(decodeURIComponent("{{{reposList}}}"));
-			repos = "{{{reposList}}}";
-		</script>
 	</head>
 	<body>
+
+
 		<!-- visible on ajax operation -->
 		<div id="loadingBack"></div>
 		<div id="loading">
@@ -37,15 +37,15 @@
 						<div class="dropdown-menu" id="reposList">
 							<div class="dropline">
 								<form class="col-lg-12 col-md-12 col-sm-12">
-										<div class="form-group">
+									<div class="form-group">
   										<input type="search" class="form-control" id="exampleDropdownFormEmail1" placeholder="repository name">
 	    								<button type="button" class="btn btn-primary"><!--img src="img/search.png"--><span class="oi oi-magnifying-glass"></span></button>
 									</div>
-									</form>
-								</div>
-								{{#reposList}}
-						    		<span class="dropdown-item repos" id="{{_id}}">{{name}}</span>
-								{{/reposList}}
+								</form>
+							</div>
+							<div id="list">
+						    	<!--filled by jquery-->
+						    </div>
 						</div>
 					</li>
 					<!--li class="nav-item">
@@ -77,8 +77,8 @@
 				<div class="total">
 					<div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash">
 						<div class="titleRepository">
-							<h3 id="name"><span class="oi oi-fork"></span><a href="{{repos.0.url}}">{{reposList.0.name}}</a> </h3>
-							<span class="badge badge-pill badge-primary">{{reposList.0.totIssues}}</span>
+							<h3 id="name"><span class="oi oi-fork"></span><a href=""></a> </h3>
+							<span class="badge badge-pill badge-primary"></span>
 						</div>
 						<div class="col-lg-8 col-md-12 col-sm-12 eqMargin">
 							<div class="block">
@@ -142,11 +142,8 @@
 		<!--js for bootstrap 4-->
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
-		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" 
-		crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" 
-		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" 
-		crossorigin="anonymous"></script>
+		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 		<!--js for chart.js-->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 		<!--personal js-->

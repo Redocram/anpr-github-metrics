@@ -9,6 +9,7 @@ let hbs = require('express-handlebars');
 let index = require('./routes/index');
 let users = require('./routes/users');
 let test = require('./routes/test');
+let dashboard = require('./routes/dashboard');
 
 let app = express();
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/test', test);
+app.use('/dashboard', dashboard);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,7 +1,6 @@
 'use strict';
 
 var schedule = require('node-schedule');
-let server = require('../githubApi/server');
 let http = require('http');
 
 var j = schedule.scheduleJob('*/1 * * * *', function(){

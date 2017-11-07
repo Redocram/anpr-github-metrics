@@ -7,7 +7,7 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
     console.log('Checked repo on: ' + new Date());
 
     http.get('http://localhost:3000/github', (res) => {
-        const { statusCode } = res;
+        const  statusCode  = res;
         const contentType = res.headers['content-type'];
 
         let error;

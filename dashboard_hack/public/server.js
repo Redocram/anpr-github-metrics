@@ -1,8 +1,7 @@
 'use strict';
 let http = require('http');
-let app = require('./app')
-
-var http = require('http');
+//let app = require('./app')
+//var http = require('http');
 var handlebars = require('handlebars');
 //var octicons = require("octicons");
 var fs = require('fs');
@@ -94,6 +93,7 @@ const requestHandler = (request, response) => {
         }
 }
 
+const server = http.createServer(requestHandler);
 server.listen(port, (err) => {
   if (err) {
     return console.log('something bad happened', err);

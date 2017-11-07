@@ -4,9 +4,9 @@ body{
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
-.row{
+/*.row{
 	margin: 0 !important;
-}
+}*/
 
 a{
 	color: #0366d6;
@@ -50,6 +50,11 @@ a{
 .dropdown-item{
 	padding: .25rem 1.5rem .25rem .25rem;
 	font-size: 13px;
+}
+
+#reposList{
+	max-height: 80vh;
+	overflow-y: auto;
 }
 
 /* ---------------------- blocco titolo repository --------------------- */
@@ -143,9 +148,18 @@ a{
 	padding-left: 15px;
 }
 
-.total {
-	margin-top: 50px;
+/*.graphs{
 	width: 100%;
+}*/
+
+.card{
+	-webkit-transition-delay: 0.5s;
+    transition-delay: 0.5s;
+}
+
+.total {
+	/*margin-top: 20px;*/
+	/*width: 100%;*/
 	margin-left: 15px;
 	margin-right: 15px;
 }
@@ -159,7 +173,7 @@ a{
 	display: inline-block;
 }*/
 
-.eqMargin {
+/*.eqMargin {
 	padding: 0 !important;
 	float: left;
 }
@@ -208,11 +222,14 @@ a{
 	color: #ffffff;
 	text-align: center;
 }
-
-.imgGraph {
-	float: left;	
-	margin-top: 5px;
+*/
+.card {
+	/*float: left;*/	
+	/*margin-top: 5px;*/
+	padding: 5px;
+	text-align: center;
 }
+/*
 .imgGraph > canvas {
 	border: 1px solid #0066CC;
 	height: 200px !important;
@@ -222,7 +239,7 @@ a{
 .midCall {
 	font-size: 20px !important;
 }
-
+*/
 
 /* ------------------------ loading animated glyph ----------------------*/
 #loading{
@@ -280,9 +297,4 @@ a{
         -webkit-transform: rotate(359deg);
         transform: rotate(359deg);
     }
-}
-
-#reposList{
-	max-height: 80vh;
-	overflow-y: auto;
 }

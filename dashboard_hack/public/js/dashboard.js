@@ -2,10 +2,10 @@ const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 6;
 //graphs
-var ctxEvaluateLabelsChart;
-var ctxAvgRespCloseChart;
-var ctxCloseChart;
-var ctxFirstRespChart;
+ctxEvaluateLabelsChart = null;
+ctxAvgRespCloseChart = null;
+ctxCloseChart = null;
+ctxFirstRespChart = null;
 
 // --------------- utilities and formatting functions --------------------//
 function humanizeHours(hours){
@@ -83,6 +83,9 @@ function firstRespChart(stats, distributionSteps){
             }]
         },
         options: {
+            legend: {
+                display: false
+            },
             responsive: true,
             maintainAspectRatio: true,
             layout: {
@@ -126,6 +129,9 @@ function closeChart(stats, distributionSteps){
             }]
         },
         options: {
+            legend: {
+                display: false
+            },
             responsive: true,
             maintainAspectRatio: true,
             layout: {
@@ -189,17 +195,19 @@ function evaluateLabelsChart(stats, maxLabels){
 
     countFirstLabels = maxLabels;
     data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384'];
-    stats.forEach(function(label){
-        if(countFirstLabels>0){
-            data.labels.push(label[0]);
-            data.datasets[0].data.push(label[1]);
-            countFirstLabels--;
-        }
-        else{
-            data.labels[data.labels.length-1] = "Altre label";
-            data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
-        }
-    });
+    if(stats.length >0){
+        stats.forEach(function(label){
+            if(countFirstLabels>0){
+                data.labels.push(label[0]);
+                data.datasets[0].data.push(label[1]);
+                countFirstLabels--;
+            }
+            else{
+                data.labels[data.labels.length-1] = "Altre label";
+                data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
+            }
+        });
+    }
 
     var myChart = new Chart(ctxEvaluateLabelsChart, {
         type: 'pie',
@@ -250,10 +258,10 @@ function fillDropdown(){
 }
 
 function clearGraphs(){
-    ctxEvaluateLabelsChart.clearRect(0, 0, canvas.width, canvas.height);
-    //ctxAvgRespCloseChart.clearRect(0, 0, canvas.width, canvas.height);
-    ctxCloseChart.clearRect(0, 0, canvas.width, canvas.height);
-    ctxFirstRespChart.clearRect(0, 0, canvas.width, canvas.height);
+    ctxEvaluateLabelsChart = null;
+    ctxAvgRespCloseChart = null;
+    ctxCloseChart = null;
+    ctxFirstRespChart = null;
 }
 
 $('document').ready(function(){

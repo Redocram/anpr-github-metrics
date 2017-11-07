@@ -49,110 +49,214 @@
 		</header>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="topbar">
-					<div class="titleRepository">
-							<svg aria-hidden="true" class="octicon octicon-repo-forked" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
-							<span id="owner"></span><span> / </span><span id="name"></span><br />
-							<span id="parent"></span>
-					</div>
-					<div class="buttons">
-						<div class="btn btn-sm">
-							<span class="btn btn-sm btn-topbar-sx">
-	  							<svg aria-hidden="true" class="octicon octicon-eye" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
-	  							Watchers</span>
-							</span>
-							<span class="btn btn-sm btn-topbar-dx" id="watchers">
-						</div>
-						<div class="btn btn-sm">
-							<span class="btn btn-sm btn-topbar-sx">
+					<div class="topbar">
+				<div class="container">
+						<div class="titleRepository">
 								<svg aria-hidden="true" class="octicon octicon-repo-forked" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
-	  							Forks
-							</span>
-							<span class="btn btn-sm btn-topbar-dx" id="forks"></span>
+								<span id="owner"></span><span> / </span><strong><span id="name" class=""></span></strong><br />
+								<span id="parent"></span>
 						</div>
-						<div class="btn btn-sm">
-							<span class="btn btn-sm btn-topbar-sx">
-								<svg aria-hidden="true" class="octicon octicon-organization" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4"></path></svg>
-	  							Contributors
-							</span>
-							<span class="btn btn-sm btn-topbar-dx" id="contributors"></span>
-						</div>
-						<div class="btn btn-sm">
-							<span class="btn btn-sm btn-topbar-sx">
-								<svg aria-hidden="true" class="octicon octicon-repo-forked" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
-	  							Branches
-							</span>
-							<span class="btn btn-sm btn-topbar-dx" id="branches"></span>
+						<div class="buttons">
+							<div class="btn btn-sm">
+								<span class="btn btn-sm btn-topbar-sx">
+		  							<svg aria-hidden="true" class="octicon octicon-eye" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
+		  							Watchers</span>
+								</span>
+								<span class="btn btn-sm btn-topbar-dx" id="watchers"></span>
+							</div>
+							<div class="btn btn-sm">
+								<span class="btn btn-sm btn-topbar-sx">
+									<svg aria-hidden="true" class="octicon octicon-repo-forked" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+		  							Forks
+								</span>
+								<span class="btn btn-sm btn-topbar-dx" id="forks"></span>
+							</div>
+							<div class="btn btn-sm">
+								<span class="btn btn-sm btn-topbar-sx">
+									<svg aria-hidden="true" class="octicon octicon-organization" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4"></path></svg>
+		  							Contributors
+								</span>
+								<span class="btn btn-sm btn-topbar-dx" id="contributors"></span>
+							</div>
+							<div class="btn btn-sm">
+								<span class="btn btn-sm btn-topbar-sx">
+									<svg aria-hidden="true" class="octicon octicon-repo-forked" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+		  							Branches
+								</span>
+								<span class="btn btn-sm btn-topbar-dx" id="branches"></span>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>	
+		<div class="container">
 			<div class="row">
 				<div class="subTitle">
 					<span>An analytics system for github issues</span>
 				</div>
 			</div>
 			<div class="row">
-				<div class="graphs">
-					<div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash">
-						<div class="col-lg-8 col-md-12 col-sm-12 eqMargin">
+				
+					<!--div class="col-md-2 ml-md-auto col-lg-12 col-md-12 col-sm-12 myBodyDash"-->
+						<!--div class="col-lg-8 col-md-12 col-sm-12 eqMargin"-->
 							<!--div class="block"-->
-								<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
+								<div class="card col-lg-4 col-md-4 col-sm-12">
+									<div class="card-header">
+										tempo medio prima risposta
+									</div>
+								  <div class="card-block">
+								    <p class="card-text" id="avgFirstTime"></p>
+								  </div>
+								  <div class="card-header">
+										tempo medio chiusura Issue
+									</div>
+								  <div class="card-block">
+								    <p class="card-text" id="avgCloseTime"></p>
+								  </div>
+								</div>
+								<!--div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
 									<p class="midCall" id="avgFirstTime"></p>
 									<h6>tempo medio prima risposta</h6>
+								</div-->
+								<div class="card col-lg-8 col-md-8 col-sm-12">
+									<div class="card-header">
+										<svg aria-hidden="true" class="octicon octicon-graph" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"></path></svg>
+										<span>Distribuzione tempi prima risposta</span>
+									</div>
+								  <div class="card-block">
+								    <p class="card-text">
+								    	<canvas id="firstRespChart"></canvas>	
+								    </p>
+								  </div>
 								</div>
-								<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
+								<!--div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
 									<canvas id="firstRespChart"></canvas>
+								</div-->
+							<!--/div-->
+							<!--div class="block"-->
+								
+								<!--div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
+									<p class="midCall" id="avgCloseTime"></p>
+									<h6>tempo medio chiusura ticket</h6>
+								</div-->
+								<div class="card col-lg-8 col-md-8 col-sm-12">
+									<div class="card-header">
+									<svg aria-hidden="true" class="octicon octicon-graph" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"></path></svg>
+										<span>Distribuzione tempi chiusura issue</span>
+									</div>
+								  <div class="card-block">
+								    <p class="card-text">
+								    	<canvas id="closeChart"></canvas>	
+								    </p>
+								  </div>
+								</div>
+								<!--div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
+									<canvas id="closeChart"></canvas>
+								</div-->
+							<!--/div-->
+							<!--div class="block "-->
+								<div class="card col-lg-8 col-md-8 col-sm-12">
+									<div class="card-header">
+									<svg aria-hidden="true" class="octicon octicon-graph" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"></path></svg>
+										<span>Label maggiornamente utilizzate</span>
+									</div>
+								  <div class="card-block">
+								    <p class="card-text">
+								    	<canvas id="evaluateLabelsChart"></canvas>
+								    		
+								    </p>
+								  </div>
+								</div>
+								<!--div class="col-lg-6 col-md-6 col-sm-12 imgGraph eqMargin">
+									<canvas id="evaluateLabelsChart"></canvas>
+								</div-->
+								<div class="card col-lg-8 col-md-8 col-sm-12">
+									<div class="card-header">
+									<svg aria-hidden="true" class="octicon octicon-graph" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"></path></svg>
+										<span>Percentuale issues senza label</span>
+									</div>
+								  <div class="card-block">
+								    <p class="card-text">
+								    	<canvas id="myDoughnutChart"></canvas>
+								    </p>
+								  </div>
+								</div>
+								<!--div class="col-lg-6 col-md-6 col-sm-12 imgGraph">
+									<canvas id="myDoughnutChart"></canvas>percentuale issue no comment
+								</div-->
+							<!--/div-->
+						<!--/div-->
+						<!--div class="col-lg-4 col-md-12 col-sm-12 floatLine eqMargin"-->
+							<!--div class="block"-->
+								<div class="card col-lg-4 col-md-4 col-sm-12">
+									<div class="card-header">
+										ticket aperti
+									</div>
+								  <div class="card-block">
+								    <p class="card-text" id="tOpen"></p>
+								  </div>
+								  <div class="card-header">
+										ticket chiusi
+									</div>
+								  <div class="card-block">
+								    <p class="card-text" id="tClosed"></p>
+								  </div>
+								</div>
+								<!--div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
+									<p id="tOpen"></p>
+									<h6>ticket aperti</h6>
+								</div-->
+								
+								<!--div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
+									<p id="tClosed"></p>
+									<h6>ticket chiusi</h6>
+								</div-->
+							<!--/div-->
+							<!--div class="block"-->
+								<div class="col-lg-12 col-md-12 col-sm-12 imgGraph eqMargin">
+									<div class="card-header">
+									<svg aria-hidden="true" class="octicon octicon-graph" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"></path></svg>
+										<span>Distribuzione tempi apertura/chiusura</span>
+									</div>
+									<div class="card-block">
+								    <p class="card-text">
+									<canvas id="avgRespCloseChart"></canvas>
+										</p>
+									</div>
 								</div>
 							<!--/div-->
 							<!--div class="block"-->
-								<div class="col-lg-4 col-md-4 col-sm-12 txtGraph">
-									<p class="midCall" id="avgCloseTime"></p>
-									<h6>tempo medio chiusura ticket</h6>
+							<div class="card col-lg-4 col-md-4 col-sm-12">
+								<div class="card-header">
+									issue chiuse senza commento
 								</div>
-								<div class="col-lg-8 col-md-8 col-sm-12 imgGraph">
-									<canvas id="closeChart"></canvas>
-								</div>
-							<!--/div-->
-							<!--div class="block "-->
-								<div class="col-lg-6 col-md-6 col-sm-12 imgGraph eqMargin">
-									<canvas id="evaluateLabelsChart"></canvas>
-								</div>
-								<div class="col-lg-6 col-md-6 col-sm-12 imgGraph">
-									<canvas id="myDoughnutChart"></canvas>percentuale issue no comment
-								</div>
-							<!--/div-->
-						</div>
-						<div class="col-lg-4 col-md-12 col-sm-12 floatLine eqMargin">
-							<div class="block">
-								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
-									<p id="tOpen"></p>
-									<h6>ticket aperti</h6>
-								</div>
-								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
-									<p id="tClosed"></p>
-									<h6>ticket chiusi</h6>
-								</div>
+							  <div class="card-block">
+							    <p class="card-text" id="closedNoComments"></p>
+							  </div>
 							</div>
-							<div class="block">
-								<div class="col-lg-12 col-md-12 col-sm-12 imgGraph eqMargin">
-									<canvas id="avgRespCloseChart"></canvas>
-								</div>
-							</div>
-							<div class="block">
-								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
+								<!--div class="col-lg-6 col-md-6 col-sm-12 txtGraph">
 									<p id="closedNoComments"></p>
 									<h6>issue chiuse senza commento</h6>
+								</div-->
+							<div class="card col-lg-4 col-md-4 col-sm-12">
+								<div class="card-header">
+									issue aperte senza label
 								</div>
-								<div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
+							  <div class="card-block">
+							    <p class="card-text" id="openNoLabel"></p>
+							  </div>
+							</div>
+								<!--div class="col-lg-6 col-md-6 col-sm-12 txtGraph2">
 									<p id="openNoLabel"></p>
 									<h6>issue aperte senza label</h6>
-								</div>
-							</div>
-						</div>
-					</div>	
-				</div>			
+								</div-->
+							<!--/div-->
+						<!--/div-->
+					<!--/div-->	
+							
 			</div>
+		</div>
 		</div>
 		<!--js for bootstrap 4-->
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

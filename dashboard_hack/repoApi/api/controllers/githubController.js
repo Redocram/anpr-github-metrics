@@ -21,7 +21,7 @@ exports.github = function githubApi () {
     let dbTrigger = 0;
 
 //get auth configs
-    let config = require('../../config.json'); //token and owner
+    let config = require('../config.json'); //token and owner
     console.log(JSON.stringify(config));
     console.log(new Date().toLocaleString() + '\tloaded configuration file');
     console.log(new Date().toLocaleString() + '\tstarting Repos query');

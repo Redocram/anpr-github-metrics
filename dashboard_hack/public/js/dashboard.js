@@ -181,7 +181,8 @@ function avgRespCloseChart(stats, distributionSteps){
 }
 
 //label presence
-function evaluateLabelsChart(stats, maxLabels){
+function evaluateLabelsChart(labels, maxLabels){
+    labels = sortLabels(labels);
     ctxEvaluateLabelsChart = document.getElementById("evaluateLabelsChart");
 
     data = {
@@ -195,19 +196,19 @@ function evaluateLabelsChart(stats, maxLabels){
 
     countFirstLabels = maxLabels;
     data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384'];
-    if(stats.length >0){
-        stats.forEach(function(label){
-            if(countFirstLabels>0){
-                data.labels.push(label[0]);
-                data.datasets[0].data.push(label[1]);
-                countFirstLabels--;
-            }
-            else{
-                data.labels[data.labels.length-1] = "Altre label";
-                data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
-            }
-        });
-    }
+        if(labels != null){
+            labels.forEach(function(label){
+                if(countFirstLabels>0){
+                    data.labels.push(label[0]);
+                    data.datasets[0].data.push(label[1]);
+                    countFirstLabels--;
+                }
+                else{
+                    data.labels[data.labels.length-1] = "Altre label";
+                    data.datasets[0].data[data.datasets[0].data.length-1] += label[1];
+                }
+            });
+        }
 
     var myChart = new Chart(ctxEvaluateLabelsChart, {
         type: 'pie',

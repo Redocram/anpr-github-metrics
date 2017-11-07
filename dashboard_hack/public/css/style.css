@@ -155,6 +155,7 @@ a{
 .card{
 	-webkit-transition-delay: 0.5s;
     transition-delay: 0.5s;
+    padding: 0px !important;
 }
 
 .total {

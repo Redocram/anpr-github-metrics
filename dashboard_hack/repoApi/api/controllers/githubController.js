@@ -22,7 +22,7 @@ exports.github = function githubApi () {
 
 //get auth configs
     let config = require('../config.json'); //token and owner
-    console.log(JSON.stringify(config));
+    
     console.log(new Date().toLocaleString() + '\tloaded configuration file');
     console.log(new Date().toLocaleString() + '\tstarting Repos query');
 
@@ -396,6 +396,7 @@ exports.github = function githubApi () {
             totalIssues: 0,
             nClosedIssues: 0,
             nClosedIssuesNoComments: 0,
+            nOpenIssuesNoLabel: 0,
             nOpenIssues: 0
         };
 

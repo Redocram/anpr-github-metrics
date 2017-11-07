@@ -52,7 +52,7 @@ typings/
 
 # File Token
 dashboard_hack/token.txt
-dashboard_hack/repoApi/config.json
+dashboard_hack/repoApi/api/config.json
 # Output of 'npm pack'
 *.tgz
 

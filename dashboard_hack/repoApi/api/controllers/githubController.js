@@ -129,8 +129,9 @@ exports.github = function githubApi () {
             newRepo.url = repository.url;
             newRepo.parent = repository.parent ? repository.parent.url : "";
             newRepo.totForks = repository.forks.totalCount;
-            newRepo.totForks = repository.collaborators.totalCount;
-            newRepo.totForks = repository.watchers.totalCount;
+            newRepo.totWatchers = repository.watchers.totalCount;
+            newRepo.totBranches = repository.protectedBranches ? repository.protectedBranches.totalCount : null;
+            newRepo.totCollaborators = repository.collaborators ? repository.collaborators.totalCount : null;
             totalIssues += newRepo.totIssues;
             return newRepo;
         }

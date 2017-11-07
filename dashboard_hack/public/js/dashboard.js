@@ -225,13 +225,11 @@ function evaluateLabelsChart(stats, maxLabels){
 function fillHTML(selectedRepo){    
     //panels
     $("#name").html("<a href='" + selectedRepo.url + "' id='name'>" + selectedRepo.name + "</a>");
-    if(selectedRepo.parent)
-        $("#parent").html("forked from <a href='" + selectedRepo.parent + "''>" + selectedRepo.parent + "</a>");
-    else
-        $("#parent").html("");
+    $("#parent").html(selectedRepo.parent ? "forked from <a href='" + selectedRepo.parent + "''>" + selectedRepo.parent + "</a>" : "");
     $("#forks").html(selectedRepo.totForks);
     $("#watchers").html(selectedRepo.totWatchers);
-    $("#contributors").html(selectedRepo.totContributors);
+    $("#contributors").html(selectedRepo.totContributors != null ? selectedRepo.totContributors : "-");
+    $("#branches").html(selectedRepo.totBranches != null ? selectedRepo.totBranches : "-");
     $("#nTicket").html(selectedRepo.stats.nClosedIssues + selectedRepo.stats.nOpenIssues);
     $('#avgFirstTime').html(avgToString(selectedRepo.stats.firstRespAverage));
     $('#avgCloseTime').html(avgToString(selectedRepo.stats.closeAverage));

@@ -1,5 +1,6 @@
 'use strict';
 let http = require('http');
+let path = require('path');
 //let app = require('./app')
 //var http = require('http');
 var handlebars = require('handlebars');
@@ -45,7 +46,8 @@ const requestHandler = (request, response) => {
 				//		console.log(error);
 				//	}
 				//});
-				fs.readFile('public/index.hbs', 'utf-8', function(err, data) {
+                let indexPath = path.join(__dirname,'..','public','index.hbs');
+                fs.readFile(indexPath, 'utf-8', function(err, data) {
     				if (!err) {
     					response.writeHead(200, {'Content-Type': 'text/html'});
     					//response.header("Access-Control-Allow-Origin", "*");
@@ -72,14 +74,16 @@ const requestHandler = (request, response) => {
 
 	}
 	else if(request.url == "/css/style.css"){
-		fs.readFile('public/css/style.css', function(err, page) { 
+		let stylePath = path.join(__dirname,'..','public','css','style.css');
+		fs.readFile(stylePath, function(err, page) {
 			response.writeHead(200, {'Content-Type': 'text/css'});
 			response.write(page); 
 			response.end();
 		});
 	}
 	else if(request.url == "/js/dashboard.js"){
-		fs.readFile('public/js/dashboard.js', function(err, page) { 
+        let dashboardPath = path.join(__dirname,'..','public','js','dashboard.js');
+        fs.readFile(dashboardPath, function(err, page) {
 			response.writeHead(200, {'Content-Type': 'text/js'});
 			response.write(page); 
 			response.end();

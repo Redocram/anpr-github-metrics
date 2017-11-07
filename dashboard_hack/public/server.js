@@ -2,6 +2,7 @@
 
 var http = require('http');
 var handlebars = require('handlebars');
+//var octicons = require("octicons");
 var fs = require('fs');
 const port = 8080;
 var outputHtml = '';
@@ -46,6 +47,8 @@ const requestHandler = (request, response) => {
 				fs.readFile('public/index.hbs', 'utf-8', function(err, data) {
     				if (!err) {
     					response.writeHead(200, {'Content-Type': 'text/html'});
+    					//response.header("Access-Control-Allow-Origin", "*");
+   						//response.header("Access-Control-Allow-Headers", "X-Requested-With");
     					var source = data.toString();
 						renderSource(source, {reposList: encodeURIComponent(JSON.stringify(dbResponse))});
 						//response.write(encodeURIComponent(JSON.stringify(dbResponse)));

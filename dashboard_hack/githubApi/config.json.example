@@ -1,4 +1,5 @@
 {
 	"userToken": "your_user_token",
-	"ownerName": "repository_owner_name"
+	"ownerName": "repository_owner_name",
+	"type": "organization | repositoryOwner"
 }

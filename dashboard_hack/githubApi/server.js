@@ -35,16 +35,27 @@ module.exports.github = githubApi
         if ((callNumber == 1 || hasNextPage === true)) {
             var query = JSON.stringify({
                 query: "query" + (callNumber > 1 ? "($lastRead: String!)" : "") + "{" +
-                "  organization(login: \"" + config.ownerName + "\") {" +
+                config.type + "  (login: \"" + config.ownerName + "\") {" +
                 "	repositories(first: 100" + (callNumber > 1 ? ", after: $lastRead" : "") + ") {" +
                 "		pageInfo{" +
                 "			endCursor" +
                 "			hasNextPage" +
                 "		}" +
-                //"		totalCount" +
                 "		nodes {" +
                 "			name" +
                 "			url" +
+                "           watchers{" +
+                "               totalCount" +
+                "           }" +
+                "           collaborators{" +
+                "               totalCount" +
+                "           }" +
+                "           parent{" +
+                "               url" +
+                "           }" +
+                "           forks{" +
+                "               totalCount" +
+                "           }" +
                 "			issues{" +
                 "				totalCount" +
                 "			}" +
@@ -107,12 +118,20 @@ module.exports.github = githubApi
             let newRepo = {
                 name: "",
                 url: "",
+                parent: "",
+                totForks: 0,
                 totIssues: 0,
+                totWatcher: 0,
+                totCollaborators: 0
             };
 
             newRepo.totIssues = repository.issues.totalCount;
             newRepo.name = repository.name;
             newRepo.url = repository.url;
+            newRepo.parent = repository.parent ? repository.parent.url : "";
+            newRepo.totForks = repository.forks.totalCount;
+            newRepo.totForks = repository.collaborators.totalCount;
+            newRepo.totForks = repository.watchers.totalCount;
             totalIssues += newRepo.totIssues;
             return newRepo;
         }

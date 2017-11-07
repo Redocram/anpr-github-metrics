@@ -1,6 +1,6 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
-const MAX_LABELS = 6;
+const MAX_LABELS = 10;
 //graphs
 ctxEvaluateLabelsChart = null;
 ctxAvgRespCloseChart = null;
@@ -23,12 +23,13 @@ function humanizeHours(hours){
 }
 
 function avgToString(avg){
-    var parsedAvg = /*avg.Years != 0 ? avg.Years + "Y : " : "";
-    parsedAvg +=*/ avg.Months + "M : ";
-    parsedAvg += avg.Days + "D<br/>";
-    parsedAvg += avg.Hours + "h : ";
-    parsedAvg += avg.Minutes + "m";
-    //parsedAvg += avg.Hours + "s";
+    var parsedAvg = '-';
+    if(avg.Months!=null){
+        parsedAvg = avg.Months + "M : ";
+        parsedAvg += avg.Days + "D ";
+        parsedAvg += avg.Hours + "h : ";
+        parsedAvg += avg.Minutes + "m";
+    }
 
     return parsedAvg;
 }
@@ -61,13 +62,15 @@ function firstRespChart(stats, distributionSteps){
         labels: []
     };
 
-    //data.labels = distributionSteps;
-    for (var i = 0; i < distributionSteps.length; i ++) {
-        coord = new Object();
-        coord.x = distributionSteps[i];
-        coord.y = stats.firstRespDistributed[i];
-        data.datasets.push(coord);
-
+    var sum = stats.firstRespDistributed.reduce((x, y) => x + y);
+    if(sum != 0){
+        //data.labels = distributionSteps;
+        for (var i = 0; i < distributionSteps.length; i ++) {
+            coord = new Object();
+            coord.x = distributionSteps[i];
+            coord.y = stats.firstRespDistributed[i];
+            data.datasets.push(coord);
+        }
     }
 
     var myChart = new Chart(ctxFirstRespChart, {
@@ -90,6 +93,14 @@ function firstRespChart(stats, distributionSteps){
             maintainAspectRatio: true,
             layout: {
                 padding: 10
+            },
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
             }
         }
     });
@@ -108,12 +119,15 @@ function closeChart(stats, distributionSteps){
         labels: []
     };
 
-    //data.labels = distributionSteps;
-    for (var i = 0; i < distributionSteps.length; i ++) {
-        coord = new Object();
-        coord.x = distributionSteps[i];
-        coord.y = stats.closeDistributed[i];
-        data.datasets.push(coord);
+    var sum = stats.closeDistributed.reduce((x, y) => x + y);
+    if(sum != 0){
+        //data.labels = distributionSteps;
+        for (var i = 0; i < distributionSteps.length; i ++) {
+            coord = new Object();
+            coord.x = distributionSteps[i];
+            coord.y = stats.closeDistributed[i];
+            data.datasets.push(coord);
+        }
     }
 
     var myChart = new Chart(ctxCloseChart, {
@@ -136,6 +150,14 @@ function closeChart(stats, distributionSteps){
             maintainAspectRatio: true,
             layout: {
                 padding: 10
+            },
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
             }
         }
     });
@@ -195,7 +217,7 @@ function evaluateLabelsChart(labels, maxLabels){
     };
 
     countFirstLabels = maxLabels;
-    data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384'];
+    data.datasets[0].backgroundColor = ['#ffcd56', '#5bace1', '#ff6384', '#50da92', '#5b68fc', '#36a2eb', '#ff6384',/**/ '#cdff84', '#6368cf', '#cdcdcd'];
         if(labels != null){
             labels.forEach(function(label){
                 if(countFirstLabels>0){
@@ -223,9 +245,8 @@ function evaluateLabelsChart(labels, maxLabels){
             	position: "left"
             },
             title: {
-            display: true,
-            text: 'Label più utilizzate'
-        }
+            display: false
+            }
         }
     });
 }
@@ -233,6 +254,7 @@ function evaluateLabelsChart(labels, maxLabels){
 // --------------------------------- font-end filling blocks section ----------------------------------//
 function fillHTML(selectedRepo){    
     //panels
+    $("#owner").html("italia");
     $("#name").html("<a href='" + selectedRepo.url + "' id='name'>" + selectedRepo.name + "</a>");
     $("#parent").html(selectedRepo.parent ? "forked from <a href='" + selectedRepo.parent + "''>" + selectedRepo.parent + "</a>" : "");
     $("#forks").html(selectedRepo.totForks);
@@ -246,6 +268,7 @@ function fillHTML(selectedRepo){
     $('#tClosed').html(selectedRepo.stats.nClosedIssues);
     $("#closedNoComments").html(selectedRepo.stats.nClosedIssuesNoComments);
     $("#openNoLabel").html(selectedRepo.stats.nOpenIssuesNoLabel);
+    $("#totIssues").html(selectedRepo.totIssues);
     //graphs
     firstRespChart(selectedRepo.stats, AVG_DIST_STEPS);
     closeChart(selectedRepo.stats, AVG_DIST_STEPS)
@@ -259,6 +282,14 @@ function fillDropdown(){
 }
 
 function clearGraphs(){
+    $("#closeChart").remove();
+    $("#pCloseChart").append("<canvas id='closeChart'></canvas>");
+    $("#evaluateLabelsChart").remove();
+    $("#pEvaluateLabelsChart").append("<canvas id='evaluateLabelsChart'></canvas>");
+    $("#firstRespChart").remove();
+    $("#pFirstRespChart").append("<canvas id='firstRespChart'></canvas>");
+    $("#avgRespCloseChart").remove();
+    $("#pAvgRespCloseChart").append("<canvas id='avgRespCloseChart'></canvas>");
     ctxEvaluateLabelsChart = null;
     ctxAvgRespCloseChart = null;
     ctxCloseChart = null;

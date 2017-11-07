@@ -8,7 +8,7 @@ exports.list_all_repos = function(req, res){
 		if(err)
 			res.send(err);
 		res.json(repo);
-	});
+	}).sort({ name: 1 });
 };
 
 exports.create_a_repo = function(req, res){
@@ -21,7 +21,7 @@ exports.create_a_repo = function(req, res){
 };
 
 exports.read_a_repo = function(req, res){
-	Repo.findById(req.params.repoId, function(err, repo){
+	Repo.find({name: req.params.repoName}, function(err, repo){
 		if(err)
 			res.send(err);
 		res.json(repo);

@@ -19,6 +19,7 @@
     "mongodb": "^2.2.33",
     "mongoose": "^4.12.3",
     "node-schedule": "^1.2.5",
+    "octicons": "^7.0.1",
     "opn": "^5.1.0",
     "pg": "7.3.0"
   },

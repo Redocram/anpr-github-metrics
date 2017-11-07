@@ -1,7 +1,13 @@
 const AVG_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 //const OC_DIST_STEPS = new Array(1, 3, 6, 12, 24, 168, "Oltre");
 const MAX_LABELS = 6;
+//graphs
+var ctxEvaluateLabelsChart;
+var ctxAvgRespCloseChart;
+var ctxCloseChart;
+var ctxFirstRespChart;
 
+// --------------- utilities and formatting functions --------------------//
 function humanizeHours(hours){
 	var humanized;
 	if(typeof hours == "string")
@@ -17,12 +23,12 @@ function humanizeHours(hours){
 }
 
 function avgToString(avg){
-    var parsedAvg = avg.Years != 0 ? avg.Years + "Y : " : "";
-    parsedAvg += avg.Months + "M : ";
+    var parsedAvg = /*avg.Years != 0 ? avg.Years + "Y : " : "";
+    parsedAvg +=*/ avg.Months + "M : ";
     parsedAvg += avg.Days + "D<br/>";
     parsedAvg += avg.Hours + "h : ";
-    parsedAvg += avg.Minutes + "m : ";
-    parsedAvg += avg.Hours + "s";
+    parsedAvg += avg.Minutes + "m";
+    //parsedAvg += avg.Hours + "s";
 
     return parsedAvg;
 }
@@ -48,7 +54,7 @@ function firstRespChart(stats, distributionSteps){
 	AVG_DIST_STEPS.forEach(function(step){
 	   humanReadableSteps.push(humanizeHours(step));
 	});
-    var ctx = document.getElementById("firstRespChart");
+    ctxFirstRespChart = document.getElementById("firstRespChart");
     
     var data = {
         datasets: [],
@@ -64,7 +70,7 @@ function firstRespChart(stats, distributionSteps){
 
     }
 
-    var myChart = new Chart(ctx, {
+    var myChart = new Chart(ctxFirstRespChart, {
         type: 'line',
         data: {
             labels: humanReadableSteps,
@@ -92,7 +98,7 @@ function closeChart(stats, distributionSteps){
 	AVG_DIST_STEPS.forEach(function(step){
 		humanReadableSteps.push(humanizeHours(step));
 	});    
-    var ctx = document.getElementById("closeChart");
+    ctxCloseChart = document.getElementById("closeChart");
     
     var data = {
         datasets: [],
@@ -107,7 +113,7 @@ function closeChart(stats, distributionSteps){
         data.datasets.push(coord);
     }
 
-    var myChart = new Chart(ctx, {
+    var myChart = new Chart(ctxCloseChart, {
         type: 'line',
         data: {
             labels: humanReadableSteps,
@@ -131,7 +137,7 @@ function closeChart(stats, distributionSteps){
 
 //average close/time distributed
 function avgRespCloseChart(stats, distributionSteps){
-    var ctx = document.getElementById("avgRespCloseChart").getContext('2d');
+    ctxAvgRespCloseChart = document.getElementById("avgRespCloseChart").getContext('2d');
 
     var data = {
         labels: distributionSteps,
@@ -151,7 +157,7 @@ function avgRespCloseChart(stats, distributionSteps){
         ]
     };
 
-    var myChart = new Chart(ctx, {
+    var myChart = new Chart(ctxAvgRespCloseChart, {
         type: 'bar',
         data: data,
         options: {
@@ -170,7 +176,7 @@ function avgRespCloseChart(stats, distributionSteps){
 
 //label presence
 function evaluateLabelsChart(stats, maxLabels){
-    var ctx = document.getElementById("evaluateLabelsChart");
+    ctxEvaluateLabelsChart = document.getElementById("evaluateLabelsChart");
 
     data = {
         datasets: [{
@@ -195,7 +201,7 @@ function evaluateLabelsChart(stats, maxLabels){
         }
     });
 
-    var myChart = new Chart(ctx, {
+    var myChart = new Chart(ctxEvaluateLabelsChart, {
         type: 'pie',
         data: data,
         options: {
@@ -216,18 +222,77 @@ function evaluateLabelsChart(stats, maxLabels){
 }
 
 // --------------------------------- font-end filling blocks section ----------------------------------//
-$('document').ready(function fillHTML(){
+function fillHTML(selectedRepo){    
+    //panels
+    $("#name").html("<a href='" + selectedRepo.url + "' id='name'>" + selectedRepo.name + "</a>");
+    if(selectedRepo.parent)
+        $("#parent").html("forked from <a href='" + selectedRepo.parent + "''>" + selectedRepo.parent + "</a>");
+    else
+        $("#parent").html("");
+    $("#forks").html(selectedRepo.totForks);
+    $("#watchers").html(selectedRepo.totWatchers);
+    $("#contributors").html(selectedRepo.totContributors);
+    $("#nTicket").html(selectedRepo.stats.nClosedIssues + selectedRepo.stats.nOpenIssues);
+    $('#avgFirstTime').html(avgToString(selectedRepo.stats.firstRespAverage));
+    $('#avgCloseTime').html(avgToString(selectedRepo.stats.closeAverage));
+    $('#tOpen').html(selectedRepo.stats.nOpenIssues);
+    $('#tClosed').html(selectedRepo.stats.nClosedIssues);
+    $("#closedNoComments").html(selectedRepo.stats.nClosedIssuesNoComments);
+    $("#openNoLabel").html(selectedRepo.stats.nOpenIssuesNoLabel);
     //graphs
-    firstRespChart(repo.stats, AVG_DIST_STEPS);
-    closeChart(repo.stats, AVG_DIST_STEPS)
-    evaluateLabelsChart(repo.stats.evaluateLabels, MAX_LABELS);
-    //other panels
-    $("#name").html(ownerName + "/" + repoName);
-    $("#nTicket").html(repo.stats.nClosedIssues + repo.stats.nOpenIssues);
-    $('#avgFirstTime').html(avgToString(repo.stats.firstRespAverage));
-    $('#avgCloseTime').html(avgToString(repo.stats.closeAverage));
-    $('#tOpen').html(repo.stats.nOpenIssues);
-    $('#tClosed').html(repo.stats.nClosedIssues);
-    $("#closedNoComments").html(repo.stats.nClosedIssuesNoComments);
-    $("#openNoLabel").html(repo.stats.nOpenIssuesNoLabel);
+    firstRespChart(selectedRepo.stats, AVG_DIST_STEPS);
+    closeChart(selectedRepo.stats, AVG_DIST_STEPS)
+    evaluateLabelsChart(selectedRepo.stats.evaluateLabels, MAX_LABELS);
+}
+
+function fillDropdown(){
+    repos.forEach(function(repo){
+        $("#list").append("<li class='dropdown-item repos'>" + repo.name + "</li>");
+    });
+}
+
+function clearGraphs(){
+    ctxEvaluateLabelsChart.clearRect(0, 0, canvas.width, canvas.height);
+    //ctxAvgRespCloseChart.clearRect(0, 0, canvas.width, canvas.height);
+    ctxCloseChart.clearRect(0, 0, canvas.width, canvas.height);
+    ctxFirstRespChart.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+$('document').ready(function(){
+    fillDropdown();
+    fillHTML(repos[0]);
+});
+
+
+$("#list").on("click", ".repos", function(event){
+    var selectedName = $(this).text();
+    var selectedRepo = repos.find(function(element){
+        return element.name == selectedName;
+    }, selectedName);
+    $("#reposList").hide();
+    clearGraphs();//clean page
+    fillHTML(selectedRepo);//refill page
+});
+
+$("#exampleDropdownFormEmail1").click(function(){
+    $("#reposList").show();
+});
+
+$(window).click(function() {
+ $("#reposList").hide();
+});
+
+$('#exampleDropdownFormEmail1').keyup(function(){
+
+    var that = this, $allListElements = $('#list > li');
+
+    var $matchingListElements = $allListElements.filter(function(i, li){
+        var listItemText = $(li).text().toUpperCase(), 
+            searchText = that.value.toUpperCase();
+        return ~listItemText.indexOf(searchText);
+    });
+
+    $allListElements.hide();
+    $matchingListElements.show();
+
 });

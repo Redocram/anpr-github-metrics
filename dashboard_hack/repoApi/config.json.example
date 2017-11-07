@@ -1,0 +1,8 @@
+{
+	"userToken": "your_user_token",
+	"ownerName": "repository_owner_name",
+	"mLabDB": "your_mLab_DB. Ex: ab123456",
+	"mLabUser": "your_mLab_server_user",
+	"mLabPsw": "your_mLab_server_password"
+	"type": "organization | repositoryOwner"
+}

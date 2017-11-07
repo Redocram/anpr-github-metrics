@@ -1,8 +1,6 @@
 'use strict';
 
-module.exports.github = githubApi
-
-    function githubApi () {
+exports.github = function githubApi () {
 //node requires
     const https = require('https');
     const http = require('http');
@@ -23,7 +21,8 @@ module.exports.github = githubApi
     let dbTrigger = 0;
 
 //get auth configs
-    let config = require('./config.json'); //token and owner
+    let config = require('../config.json'); //token and owner
+    console.log(JSON.stringify(config));
     console.log(new Date().toLocaleString() + '\tloaded configuration file');
     console.log(new Date().toLocaleString() + '\tstarting Repos query');
 
@@ -115,16 +114,14 @@ module.exports.github = githubApi
         }
 
         function parseRepo(repository) {
-            console.log(repository);
             let newRepo = {
                 name: "",
                 url: "",
                 parent: "",
                 totForks: 0,
                 totIssues: 0,
-                totWatchers: 0,
-                totCollaborators: 0,
-                totBranches : 0
+                totWatcher: 0,
+                totCollaborators: 0
             };
 
             newRepo.totIssues = repository.issues.totalCount;
@@ -251,7 +248,7 @@ module.exports.github = githubApi
             function fillRepoIssues() {
 
                 //if (typeof repo.issues == 'undefined') {
-                    repo.issues = [];
+                repo.issues = [];
                 //}
                 gitHubResponse.data.repository.issues.edges.forEach(function (issue) {
                     var currentIssue = parseIssue(issue);
@@ -310,11 +307,11 @@ module.exports.github = githubApi
                         console.log(new Date().toLocaleString() + '\tcalculating statistics');
                         repos.forEach(function (repo) {
                             //if (repo.issues) {
-                                //calculate statistics if repo has issues
-                                var stats = statistics(repo.issues, AVG_DIST_STEPS);
-                                repo.stats = [];
-                                repo.stats = stats;
-                                delete repo.issues;
+                            //calculate statistics if repo has issues
+                            var stats = statistics(repo.issues, AVG_DIST_STEPS);
+                            repo.stats = [];
+                            repo.stats = stats;
+                            delete repo.issues;
                             //}
                             //delete repo.totIssues;
                         });

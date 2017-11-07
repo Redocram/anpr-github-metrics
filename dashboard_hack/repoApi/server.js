@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost:27017/dashboard', {useMongoClient:true});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-var routes = require('./api/routes/repoRoutes');
+var routes = require('./api/routes/apiRoutes');
 routes(app);
 
 app.use(function(req, res){

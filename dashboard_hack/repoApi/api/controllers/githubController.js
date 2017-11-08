@@ -391,6 +391,7 @@ exports.github = function githubApi () {
             firstRespDistributed: [],
             evaluateLabels: [],
             firstRespAverage: {},
+            openDistributed: [],
             closeDistributed: [],
             closeAverage: {},
             totalIssues: 0,
@@ -409,6 +410,7 @@ exports.github = function githubApi () {
             for (var i = 0; i < distNumber; i++) {
                 stats.firstRespDistributed.push(0);
                 stats.closeDistributed.push(0);
+                stats.openDistributed.push(0);
             }
 
             stats.totalIssues = arrayIssues.length;
@@ -442,8 +444,10 @@ exports.github = function githubApi () {
 
                 var curFirstResp = issue.firstResponseTime;
                 var curCloseTime = issue.closeTime;
+                var curOpenTime = issue.createdAt;
                 var oreResp = curFirstResp / 3600000;
                 var oreClose = curCloseTime / 3600000;
+                var oreOpen = curOpenTime / 3600000;
                 var esc = 0;
                 for (var i = 0; i < distNumber - 1; i++) {
                     if (oreResp < distributionSteps[i]) {
@@ -456,6 +460,11 @@ exports.github = function githubApi () {
                         curCloseTime = null;
                         esc = 1;
                     }
+                    if(oreOpen < distributionSteps[i]){
+                    	stats.openDistributed[i]++;
+                        curOpenTime = null;
+                        esc = 1;
+                    }
                     if (esc == 1)
                         break;
                 }
@@ -464,6 +473,9 @@ exports.github = function githubApi () {
                 }
                 if (curCloseTime) {
                     stats.closeDistributed[distNumber - 1]++;
+                }
+                if (curOpenTime) {
+                    stats.openDistributed[distNumber - 1]++;
                 }
             });
 

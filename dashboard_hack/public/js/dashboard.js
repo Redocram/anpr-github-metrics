@@ -165,20 +165,24 @@ function closeChart(stats, distributionSteps){
 
 //average close/time distributed
 function avgRespCloseChart(stats, distributionSteps){
+    var humanReadableSteps = new Array();   //human readable distribution steps
+    AVG_DIST_STEPS.forEach(function(step){
+        humanReadableSteps.push(humanizeHours(step));
+    });
     ctxAvgRespCloseChart = document.getElementById("avgRespCloseChart").getContext('2d');
 
     var data = {
-        labels: distributionSteps,
+        labels: humanReadableSteps,
         datasets: [
             {
-                label: "Tempo prima risposta",
+                label: "Tempo apertura",
                 backgroundColor: '#36a2eb',
                 borderColor: '#36a2eb',
-                data: stats.firstRespDistributed
+                data: stats.openDistributed
             },
             {
-                label: "Tempo chiusura Ticket",
-                backgroundColor: '#ff6384)',
+                label: "Tempo chiusura",
+                backgroundColor: '#ff6384',
                 borderColor: '#36a2eb',
                 data: stats.closeDistributed
             }
@@ -273,6 +277,7 @@ function fillHTML(selectedRepo){
     firstRespChart(selectedRepo.stats, AVG_DIST_STEPS);
     closeChart(selectedRepo.stats, AVG_DIST_STEPS)
     evaluateLabelsChart(selectedRepo.stats.evaluateLabels, MAX_LABELS);
+    avgRespCloseChart(selectedRepo.stats, AVG_DIST_STEPS);
 }
 
 function fillDropdown(){

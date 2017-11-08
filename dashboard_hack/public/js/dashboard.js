@@ -24,7 +24,7 @@ function humanizeHours(hours){
 
 function avgToString(avg){
     var parsedAvg = '-';
-    if(avg.Months!=null){
+    if(!avg.Months){
         parsedAvg = avg.Months + "M : ";
         parsedAvg += avg.Days + "D ";
         parsedAvg += avg.Hours + "h : ";

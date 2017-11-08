@@ -1,6 +1,6 @@
 'use strict';
 
-exports.github = function githubApi () {
+exports.github = function githubApi (req, res) {
 //node requires
     const https = require('https');
     const http = require('http');
@@ -247,9 +247,9 @@ exports.github = function githubApi () {
 
             function fillRepoIssues() {
 
-                //if (typeof repo.issues == 'undefined') {
+                if (typeof repo.issues == 'undefined') {
                 repo.issues = [];
-                //}
+                }
                 gitHubResponse.data.repository.issues.edges.forEach(function (issue) {
                     var currentIssue = parseIssue(issue);
                     repo.issues.push(currentIssue);
@@ -306,21 +306,20 @@ exports.github = function githubApi () {
                         console.log(new Date().toLocaleString() + '\tended Issues query');
                         console.log(new Date().toLocaleString() + '\tcalculating statistics');
                         repos.forEach(function (repo) {
-                            //if (repo.issues) {
+                            // if (repo.issues) {
                             //calculate statistics if repo has issues
                             var stats = statistics(repo.issues, AVG_DIST_STEPS);
                             repo.stats = [];
                             repo.stats = stats;
                             delete repo.issues;
-                            //}
+                            // }
                             //delete repo.totIssues;
                         });
                         console.log(new Date().toLocaleString() + '\tendend statistics');
 
                         console.log(new Date().toLocaleString() + '\tstarting db update');
                         /*call the repoApi service and write to mongo*/
-                        repos.forEach(function (repo) {
-                            apiMongoCall(repo);
+                        repos.forEach(function (repo) {                                                apiMongoCall(repo);
                         });
                         console.log(new Date().toLocaleString() + '\tended db update');
                         console.log('ALL PROCESSES CORRECTLY ENDED');
@@ -502,4 +501,4 @@ exports.github = function githubApi () {
         return convertedMs;
     }
 
-}
+res.send("Ok, I'm contacting GitHub");}

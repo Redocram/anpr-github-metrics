@@ -24,7 +24,7 @@ function humanizeHours(hours){
 
 function avgToString(avg){
     var parsedAvg = '-';
-    if(!avg.Months){
+    if(avg !== undefined && !avg.Months){
         parsedAvg = avg.Months + "M : ";
         parsedAvg += avg.Days + "D ";
         parsedAvg += avg.Hours + "h : ";
@@ -313,8 +313,6 @@ $("#list").on("click", ".repos", function(event){
         return element.name == selectedName;
     }, selectedName);
     console.log(selectedRepo);
-    console.log(selectedRepo.stats.nOpenIssues);
-    console.log(selectedRepo.stats.nOpenIssues);
     $("#reposList").hide();
     clearGraphs();//clean page
     fillHTML(selectedRepo);//refill page

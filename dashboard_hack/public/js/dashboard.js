@@ -24,7 +24,7 @@ function humanizeHours(hours){
 
 function avgToString(avg){
     var parsedAvg = '-';
-    if(avg && avg.Months){
+    if(avg){
         parsedAvg = avg.Months + "M : ";
         parsedAvg += avg.Days + "D ";
         parsedAvg += avg.Hours + "h : ";
@@ -265,7 +265,7 @@ function fillHTML(selectedRepo){
     $("#watchers").html(selectedRepo.totWatchers);
     $("#contributors").html(selectedRepo.totContributors != null ? selectedRepo.totContributors : "-");
     $("#branches").html(selectedRepo.totBranches != null ? selectedRepo.totBranches : "-");
-    $("#nTicket").html(selectedRepo.totIssues ? selectedRepo.totIssues : '0');
+    $("#nTicket").html(selectedRepo.totIssues);
     $('#avgFirstTime').html(avgToString(selectedRepo.stats.firstRespAverage));
     $('#avgCloseTime').html(avgToString(selectedRepo.stats.closeAverage));
     $('#tOpen').html(selectedRepo.stats.nOpenIssues);

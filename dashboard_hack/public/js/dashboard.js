@@ -312,7 +312,6 @@ $("#list").on("click", ".repos", function(event){
     var selectedRepo = repos.find(function(element){
         return element.name == selectedName;
     }, selectedName);
-    console.log(selectedRepo);
     $("#reposList").hide();
     clearGraphs();//clean page
     fillHTML(selectedRepo);//refill page

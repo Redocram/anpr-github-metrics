@@ -259,13 +259,13 @@ function evaluateLabelsChart(labels, maxLabels){
 function fillHTML(selectedRepo){    
     //panels
     $("#owner").html("italia");
-    $("#name").html("<a href='" + selectedRepo.url + "' id='name'>" + selectedRepo.name + "</a>");
+    $("#name").html("<a href='" + selectedRepo.url + "' id='name' target='_blank'>" + selectedRepo.name + "</a>");
     $("#parent").html(selectedRepo.parent ? "forked from <a href='" + selectedRepo.parent + "''>" + selectedRepo.parent + "</a>" : "");
     $("#forks").html(selectedRepo.totForks);
     $("#watchers").html(selectedRepo.totWatchers);
     $("#contributors").html(selectedRepo.totContributors != null ? selectedRepo.totContributors : "-");
     $("#branches").html(selectedRepo.totBranches != null ? selectedRepo.totBranches : "-");
-    $("#nTicket").html(selectedRepo.stats.nClosedIssues + selectedRepo.stats.nOpenIssues);
+    $("#nTicket").html(selectedRepo.totIssues ? selectedRepo.totIssues : '0');
     $('#avgFirstTime').html(avgToString(selectedRepo.stats.firstRespAverage));
     $('#avgCloseTime').html(avgToString(selectedRepo.stats.closeAverage));
     $('#tOpen').html(selectedRepo.stats.nOpenIssues);
@@ -312,6 +312,9 @@ $("#list").on("click", ".repos", function(event){
     var selectedRepo = repos.find(function(element){
         return element.name == selectedName;
     }, selectedName);
+    console.log(selectedRepo);
+    console.log(selectedRepo.stats.nOpenIssues);
+    console.log(selectedRepo.stats.nOpenIssues);
     $("#reposList").hide();
     clearGraphs();//clean page
     fillHTML(selectedRepo);//refill page

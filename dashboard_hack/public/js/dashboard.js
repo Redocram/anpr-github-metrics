@@ -24,7 +24,7 @@ function humanizeHours(hours){
 
 function avgToString(avg){
     var parsedAvg = '-';
-    if(!avg.Months){
+    if(avg){
         parsedAvg = avg.Months + "M : ";
         parsedAvg += avg.Days + "D ";
         parsedAvg += avg.Hours + "h : ";
@@ -259,13 +259,13 @@ function evaluateLabelsChart(labels, maxLabels){
 function fillHTML(selectedRepo){    
     //panels
     $("#owner").html("italia");
-    $("#name").html("<a href='" + selectedRepo.url + "' id='name'>" + selectedRepo.name + "</a>");
+    $("#name").html("<a href='" + selectedRepo.url + "' id='name' target='_blank'>" + selectedRepo.name + "</a>");
     $("#parent").html(selectedRepo.parent ? "forked from <a href='" + selectedRepo.parent + "''>" + selectedRepo.parent + "</a>" : "");
     $("#forks").html(selectedRepo.totForks);
     $("#watchers").html(selectedRepo.totWatchers);
     $("#contributors").html(selectedRepo.totContributors != null ? selectedRepo.totContributors : "-");
     $("#branches").html(selectedRepo.totBranches != null ? selectedRepo.totBranches : "-");
-    $("#nTicket").html(selectedRepo.stats.nClosedIssues + selectedRepo.stats.nOpenIssues);
+    $("#nTicket").html(selectedRepo.totIssues);
     $('#avgFirstTime').html(avgToString(selectedRepo.stats.firstRespAverage));
     $('#avgCloseTime').html(avgToString(selectedRepo.stats.closeAverage));
     $('#tOpen').html(selectedRepo.stats.nOpenIssues);

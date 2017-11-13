@@ -62,8 +62,8 @@ function firstRespChart(stats, distributionSteps){
         labels: []
     };
 
-    var sum = stats.firstRespDistributed.reduce((x, y) => x + y);
-    if(sum != 0){
+    var sum = stats.firstRespDistributed.length > 0 ? stats.firstRespDistributed.reduce((x, y) => x + y) : 0;
+    if(sum){
         //data.labels = distributionSteps;
         for (var i = 0; i < distributionSteps.length; i ++) {
             coord = new Object();
@@ -119,8 +119,8 @@ function closeChart(stats, distributionSteps){
         labels: []
     };
 
-    var sum = stats.closeDistributed.reduce((x, y) => x + y);
-    if(sum != 0){
+    var sum = stats.closeDistributed.length > 0 ? stats.closeDistributed.reduce((x, y) => x + y) : 0;
+    if(sum){
         //data.labels = distributionSteps;
         for (var i = 0; i < distributionSteps.length; i ++) {
             coord = new Object();
@@ -287,18 +287,31 @@ function fillDropdown(){
 }
 
 function clearGraphs(){
-    $("#closeChart").remove();
-    $("#pCloseChart").append("<canvas id='closeChart'></canvas>");
-    $("#evaluateLabelsChart").remove();
-    $("#pEvaluateLabelsChart").append("<canvas id='evaluateLabelsChart'></canvas>");
-    $("#firstRespChart").remove();
-    $("#pFirstRespChart").append("<canvas id='firstRespChart'></canvas>");
-    $("#avgRespCloseChart").remove();
-    $("#pAvgRespCloseChart").append("<canvas id='avgRespCloseChart'></canvas>");
-    ctxEvaluateLabelsChart = null;
-    ctxAvgRespCloseChart = null;
-    ctxCloseChart = null;
-    ctxFirstRespChart = null;
+    // $("#closeChart").remove();
+    // $("#pCloseChart").append("<canvas id='closeChart'></canvas>");
+    // $("#evaluateLabelsChart").remove();
+    // $("#pEvaluateLabelsChart").append("<canvas id='evaluateLabelsChart'></canvas>");
+    // $("#firstRespChart").remove();
+    // $("#pFirstRespChart").append("<canvas id='firstRespChart'></canvas>");
+    // $("#avgRespCloseChart").remove();
+    // $("#pAvgRespCloseChart").append("<canvas id='avgRespCloseChart'></canvas>");
+    // ctxEvaluateLabelsChart = null;
+    // ctxAvgRespCloseChart = null;
+    // ctxCloseChart = null;
+    // ctxFirstRespChart = null;
+
+    removeData(ctxEvaluateLabelsChart);
+    removeData(ctxAvgRespCloseChart);
+    removeData(ctxCloseChart);
+    removeData(ctxFirstRespChart);
+}
+
+function removeData(chart) {
+    chart.data.labels.pop();
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    chart.update();
 }
 
 $('document').ready(function(){

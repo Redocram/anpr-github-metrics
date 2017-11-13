@@ -89,6 +89,14 @@ const requestHandler = (request, response) => {
 			response.end();
 		});
 	}
+    else if(request.url == "/favicon.ico"){
+        let faviconPath = path.join(__dirname,'..','public','favicon.ico');
+        fs.readFile(faviconPath, function(err, page) {
+            response.writeHead(200, {'Content-Type': 'image/x-icon'});
+            response.write(page);
+            response.end();
+        });
+    }
 	else {
             response.writeHead(301,
               {Location: '/'}

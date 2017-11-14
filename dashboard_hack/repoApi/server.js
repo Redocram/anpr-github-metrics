@@ -5,9 +5,13 @@ var express = require('express'),
     Repo = require('./api/models/repoModel'),
     bodyParser = require('body-parser');
 
+let config = require('./api/config');
+
 //mongoose instance connnection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/dashboard', {useMongoClient:true});
+// mongoose.connect('mongodb://localhost:27017/dashboard', {useMongoClient:true});
+mongoose.connect('mongodb://' + config.mLabUser + ':' + config.mLabPsw +'@' + config.mLabDB +'.mlab.com:49025/dashboard', {useMongoClient:true});
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
